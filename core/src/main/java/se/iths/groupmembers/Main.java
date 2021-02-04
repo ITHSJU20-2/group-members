@@ -1,11 +1,13 @@
 package se.iths.groupmembers;
 
+import se.iths.groupmembers.spi.Page;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.NoSuchElementException;
+import java.util.ServiceLoader;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -33,24 +35,37 @@ public class Main {
 
     private static void handleConnection(Socket socket) {
         try {
+            ServiceLoader<Page> loader = ServiceLoader.load(Page.class);
             BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-            while (true) {
-                String line = input.readLine();
-                System.out.println(line);
-                if (line == null || line.isEmpty()) {
-                    break;
-                }
-            }
+//            while (true) {
+//                String line = input.readLine();
+//                System.out.println(line);
+//                if (line == null || line.isEmpty()) {
+//                    break;
+//                }
+//            }
+
             PrintWriter output = new PrintWriter(socket.getOutputStream());
 
+            String headerLine = input.readLine();
+            if (headerLine.startsWith("GET")) {
+                String path = headerLine.split(" ")[1].substring(1);
+                try {
+                    Page page = loader.findFirst().filter(reqPage -> reqPage.getPath().equals(path)).get();
+                    page.load(socket);
+                } catch (NoSuchElementException e) {
+                    // error page
+                }
+            }
+//
 //            String page = "<html><head><title>Demo page</title></head><body><h1>Hello World</h1></body></html>";
 //
 //            writeHTML(output, page);
-            File test = new File(new File("core/src/main/resources/static/index.html").getAbsoluteFile().toString());
-            renderFile(socket, test, "text/html; Charset=UTF-8", test.getName());
-            output.flush();
-            socket.close();
+////            File test = new File(new File("core/src/main/resources/static/index.html").getAbsoluteFile().toString());
+////            renderFile(socket, test, "text/html; Charset=UTF-8", test.getName());
+//            output.flush();
+//            socket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -72,7 +87,7 @@ public class Main {
         printStream.println(html);
     }
 
-    private static void renderFile(Socket socket, File file, String fileType, String fileName) {
+    private static void renderFile(Socket socket, File file) {
         try {
             PrintStream printStream = new PrintStream(socket.getOutputStream());
             int length = 0;

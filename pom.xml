@@ -23,6 +23,8 @@
 
     <modules>
         <module>core</module>
+        <module>spi</module>
+        <module>router</module>
     </modules>
 
     <dependencies>
