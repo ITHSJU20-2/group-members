@@ -38,7 +38,7 @@ public class Main {
             while (true) {
                 String line = input.readLine();
                 System.out.println(line);
-                if (line.isEmpty()) {
+                if (line == null || line.isEmpty()) {
                     break;
                 }
             }
@@ -47,12 +47,11 @@ public class Main {
 //            String page = "<html><head><title>Demo page</title></head><body><h1>Hello World</h1></body></html>";
 //
 //            writeHTML(output, page);
-            URL resource = Main.class.getClassLoader().getResource("static"+File.separator+"index.html");
-            File file = new File(resource.toURI());
-            renderFile(socket, file, "text/html; Charset=UTF-8", file.getName());
+            File test = new File(new File("core/src/main/resources/static/index.html").getAbsoluteFile().toString());
+            renderFile(socket, test, "text/html; Charset=UTF-8", test.getName());
             output.flush();
             socket.close();
-        } catch (IOException | URISyntaxException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
