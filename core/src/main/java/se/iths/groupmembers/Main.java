@@ -38,13 +38,23 @@ public class Main {
 
     private static void handleConnection(Socket socket) {
         try {
+            /*
+             * Creates a BufferedReader and reads the first header line so that we can get the request method and the
+             *  path
+             */
             BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
             String headerLine = input.readLine();
+
+            /*
+             * With the request method run the correct code
+             */
             if (headerLine.startsWith("GET")) {
-                System.out.println(headerLine);
                 String path = headerLine.split(" ")[1].substring(1);
                 Page page;
+                /*
+                 * Check if the current path is a acceptable route and load the specified page otherwise load the
+                 * error page
+                 */
                 if (routes.contains(path)) {
                     page = loader.stream().filter(reqPage -> reqPage.get().getPath().equals(path)).collect(Collectors.toList()).get(0).get();
                 } else {
@@ -53,7 +63,7 @@ public class Main {
                 page.load(socket);
 
             } else if (headerLine.startsWith("POST")) {
-
+                // handle the post requests
             }
             socket.close();
         } catch (IOException e) {

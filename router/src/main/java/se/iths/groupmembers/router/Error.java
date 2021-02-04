@@ -8,7 +8,7 @@ import java.nio.charset.StandardCharsets;
 
 public class Error implements Page {
 
-    private String path;
+    private final String path;
 
     public Error() {
         path = "error";
