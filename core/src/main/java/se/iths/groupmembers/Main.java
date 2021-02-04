@@ -42,6 +42,7 @@ public class Main {
 
             String headerLine = input.readLine();
             if (headerLine.startsWith("GET")) {
+                System.out.println(headerLine);
                 String path = headerLine.split(" ")[1].substring(1);
                 Page page;
                 if (routes.contains(path)) {
@@ -50,6 +51,8 @@ public class Main {
                     page = loader.stream().filter(reqPage -> reqPage.get().getPath().equals("error")).collect(Collectors.toList()).get(0).get();
                 }
                 page.load(socket);
+
+            } else if (headerLine.startsWith("POST")) {
 
             }
             socket.close();
