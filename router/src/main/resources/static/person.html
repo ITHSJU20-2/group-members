@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Loading...</title>
+</head>
+<body>
+
+<main id="app">
+    <h1 class="name">Loading...</h1>
+</main>
+
+<script>
+    let urlParams = new URLSearchParams(window.location.search);
+
+    document.title = urlParams.get("name");
+
+    let app = document.getElementById("app");
+
+    let name = document.querySelector(".name");
+    name.innerText = urlParams.get("name");
+
+    app.appendChild(name);
+</script>
+</body>
+</html>
