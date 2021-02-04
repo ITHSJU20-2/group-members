@@ -1,4 +1,4 @@
-package se.iths.groupmembers;
+package se.iths.groupmembers.router;
 
 import se.iths.groupmembers.spi.Page;
 
@@ -6,16 +6,16 @@ import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
-public class Index implements Page {
-    String path;
+public class Error implements Page {
 
-    public Index() {
-        path = "";
+    private String path;
+
+    public Error() {
+        path = "error";
     }
-
     @Override
     public void load(Socket socket) {
-        File file = new File(new File("router/src/main/resources/static/index.html").getAbsoluteFile().toString());
+        File file = new File(new File("router/src/main/resources/static/error.html").getAbsoluteFile().toString());
         try {
             PrintStream printStream = new PrintStream(socket.getOutputStream());
             int length = 0;

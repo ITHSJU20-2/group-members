@@ -34,7 +34,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>se.iths.groupmembers.spi.Main</mainClass>
+                            <mainClass>se.iths.groupmembers.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
