@@ -7,20 +7,22 @@
 <body>
 
 <main id="app">
-    <h1 class="name">Loading...</h1>
+    <h1 class="name loading">Loading...</h1>
 </main>
 
 <script>
     let urlParams = new URLSearchParams(window.location.search);
-
-    document.title = urlParams.get("name");
-
+    let name = urlParams.get('name')
     let app = document.getElementById("app");
+    let nameEl = document.querySelector(".name");
 
-    let name = document.querySelector(".name");
-    name.innerText = urlParams.get("name");
+    if (name) {
+        document.title = name;
+        nameEl.classList.remove('loading')
+        nameEl.innerText = name;
+    }
 
-    app.appendChild(name);
+    app.appendChild(nameEl);
 </script>
 </body>
 </html>
