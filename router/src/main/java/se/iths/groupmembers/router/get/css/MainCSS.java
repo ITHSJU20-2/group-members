@@ -1,6 +1,8 @@
 package se.iths.groupmembers.router.get.css;
 
+import se.iths.groupmembers.router.ContentType;
 import se.iths.groupmembers.router.LoadHandler;
+import se.iths.groupmembers.router.Status;
 import se.iths.groupmembers.spi.Page;
 
 import java.net.Socket;
@@ -14,7 +16,7 @@ public class MainCSS implements Page {
 
     @Override
     public void load(Socket socket) {
-        LoadHandler.load(socket, path, "text/css");
+        LoadHandler.load(socket, path, ContentType.CSS, Status.OK);
     }
 
     @Override
