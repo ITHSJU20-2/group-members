@@ -22,9 +22,10 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>Main</mainClass>
+                            <mainClass>se.iths.groupmembers.Main</mainClass>
                         </manifest>
                     </archive>
+                    <outputDirectory>../target/modules</outputDirectory>
                 </configuration>
             </plugin>
             <plugin>
