@@ -9,7 +9,7 @@ import java.net.Socket;
 
 public class Error implements Page {
 
-    private String path;
+    private final String path;
 
     public Error() {
         path = "error";
