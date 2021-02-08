@@ -3,7 +3,6 @@ package se.iths.groupmembers.router;
 public enum ContentType {
     HTML("text/html"),
     CSS("text/css");
-    // .iml test
 
     private final String contentType;
 
