@@ -3,12 +3,12 @@
              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
     http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
              version="2.1">
-    <persistence-unit name="JPAMarcus" transaction-type="RESOURCE_LOCAL">
+    <persistence-unit name="GroupMembers" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <class>se.iths.db.User</class>
         <properties>
             <property name="javax.persistence.jdbc.url"
-                      value="jdbc:sqlserver://localhost;user=Marcus;password=Racoiaws123;database=everyloop"/>
+                      value="jdbc:sqlserver://iths.tobiaswadseth.com;user=sa;password=ITHSJU20-2-SQL;database=master"/>
             <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
             <property name="hibernate.show_sql" value="true"/>
         </properties>

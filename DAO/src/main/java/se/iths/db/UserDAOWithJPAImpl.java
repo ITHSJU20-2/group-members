@@ -7,7 +7,7 @@ import java.util.List;
 
 public class UserDAOWithJPAImpl implements UserDAO {
 
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("JPAMarcus");
+    EntityManagerFactory emf = Persistence.createEntityManagerFactory("GroupMembers");
 
     @Override
     public List<User> getByFirstName(String firstName) {
