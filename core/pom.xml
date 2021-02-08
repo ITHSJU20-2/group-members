@@ -18,6 +18,7 @@
             <groupId>se.iths.groupmembers</groupId>
             <artifactId>dao</artifactId>
             <version>0.1.0</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
     <parent>
@@ -42,9 +43,28 @@
                             <mainClass>se.iths.groupmembers.Main</mainClass>
                         </manifest>
                     </archive>
-                    <outputDirectory>../target/modules</outputDirectory>
+                    <outputDirectory>../target</outputDirectory>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.1.2</version>
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>../target/modules</outputDirectory>
+                            <includeScope>runtime</includeScope>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

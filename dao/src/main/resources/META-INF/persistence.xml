@@ -10,7 +10,7 @@
             <property name="javax.persistence.jdbc.url"
                       value="jdbc:sqlserver://iths.tobiaswadseth.com;user=sa;password=ITHSJU20-2-SQL;database=master"/>
             <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
-            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.show_sql" value="false"/>
         </properties>
     </persistence-unit>
 </persistence>
