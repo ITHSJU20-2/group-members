@@ -6,4 +6,5 @@ public class UserQuery {
 
         System.out.println(udao.getByFirstName("Marcus"));
     }
+
 }

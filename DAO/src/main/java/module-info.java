@@ -7,7 +7,5 @@ module se.iths.db {
     requires com.fasterxml.classmate;
     requires java.xml.bind;
     opens se.iths.db to org.hibernate.orm.core;
-    //requires hibernate.jpa;
-    //requires hibernate.entitymanager;
     exports se.iths.db;
 }

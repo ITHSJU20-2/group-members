@@ -12,6 +12,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
+
+// java -p core/target/core-0.1.0.jar;spi/target/spi-0.1.0.jar;router/target/router-0.1.0.jar;dao/target/dao-0.1.0.jar -m core/se.iths.groupmembers.Main
+
 public class Main {
     private static final int PORT = 5050;
     private static final ServiceLoader<Page> loader = ServiceLoader.load(Page.class);
