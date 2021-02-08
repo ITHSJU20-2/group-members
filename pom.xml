@@ -25,6 +25,7 @@
         <module>core</module>
         <module>spi</module>
         <module>router</module>
+        <module>DAO</module>
     </modules>
 
     <dependencies>
