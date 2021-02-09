@@ -47,8 +47,12 @@ public class ServerThread extends Thread {
              */
             RequestMethod requestMethod = RequestMethod.valueOf(header[0]);
             switch (requestMethod) {
-                case GET -> get(header[1]);
-                case POST -> post();
+                case GET:
+                    get(header[1]);
+                    break;
+                case POST:
+                    post();
+                    break;
             }
         } catch (IOException e) {
             e.printStackTrace();
