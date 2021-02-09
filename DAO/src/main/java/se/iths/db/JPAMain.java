@@ -7,11 +7,11 @@ import java.util.List;
 
 public class JPAMain {
     public static void main(String[] args) {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("JPAMarcus");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("GroupMembers");
 
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        User u = new User("19960622-5291", "Marcus", "Lärk");
+        User u = new User("19960622", "Marcus", "Lärk");
         em.persist(u);
         System.out.println("Personal-Number = " + u.getId());
 

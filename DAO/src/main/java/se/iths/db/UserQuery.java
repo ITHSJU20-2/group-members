@@ -5,6 +5,9 @@ public class UserQuery {
         UserDAO udao = new UserDAOWithJPAImpl();
 
         System.out.println(udao.getByFirstName("Marcus"));
+        System.out.println(udao.getByFirstName("Tobias"));
+        System.out.println(udao.getByLastName("Lloyd Jones"));
+
     }
 
 }
