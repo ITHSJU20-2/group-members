@@ -31,28 +31,24 @@ public class ServerThread extends Thread {
         try {
             /*
              * Creates a BufferedReader and reads the first header line so that we can get the request method and the
-             *  path
+             * path
              */
             // TODO: Retrieve the body of the incoming request and store for later (POST requests)
             BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            String headerLine = input.readLine();
+            if (headerLine == null) {
+                return;
+            }
 
-            // This will throw an exception after some time
-            // Don't know how to fix
-            String[] header = input.readLine().split(" ");
-
-            // System.out.println(String.join(" ", header));
+            String[] header = headerLine.split(" ");
 
             /*
              * With the request method run the correct code
              */
             RequestMethod requestMethod = RequestMethod.valueOf(header[0]);
             switch (requestMethod) {
-                case GET:
-                    get(header[1]);
-                    break;
-                case POST:
-                    post();
-                    break;
+                case GET -> get(header[1]);
+                case POST -> post();
             }
         } catch (IOException e) {
             e.printStackTrace();

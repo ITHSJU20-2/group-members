@@ -31,16 +31,19 @@ public class LoadHandler {
             bos.close();
             byte[] data1 = bos.toByteArray();
 
-            String html = new String(data1, StandardCharsets.UTF_8);
-
             String contentType = Files.probeContentType(file.toPath());
 
             printStream.printf("HTTP/1.1 %d %s%n", status.getStatus(), status.getStatusString());
-            printStream.println("Content-Length: " + html.getBytes().length);
+            printStream.println("Content-Length: " + data1.length);
             printStream.println("Content-Type: " + contentType);
             printStream.println();
-            printStream.println(html);
 
+            if (!contentType.startsWith("image") && !contentType.startsWith("application")) {
+                String contents = new String(data1, StandardCharsets.UTF_8);
+                printStream.println(contents);
+            } else {
+                printStream.write(data1);
+            }
             printStream.flush();
             printStream.close();
 
