@@ -5,6 +5,7 @@ import se.iths.groupmembers.spi.Page;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,9 +34,8 @@ public class ServerThread extends Thread {
              * Creates a BufferedReader and reads the first header line so that we can get the request method and the
              * path
              */
-            // TODO: Retrieve the body of the incoming request and store for later (POST requests)
-            BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            String headerLine = input.readLine();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            String headerLine = bufferedReader.readLine();
             if (headerLine == null) {
                 return;
             }
@@ -48,11 +48,42 @@ public class ServerThread extends Thread {
             RequestMethod requestMethod = RequestMethod.valueOf(header[0]);
             switch (requestMethod) {
                 case GET -> get(header[1]);
-                case POST -> post();
+                case POST -> {
+                    String req = readBody(bufferedReader);
+                    post(header[1], req);
+                }
+                case HEAD -> head();
             }
+            socket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private String readBody(BufferedReader bufferedReader) throws IOException {
+        boolean check = false;
+        char[] charArr = new char[1024];
+        while (true) {
+            if (check) {
+                bufferedReader.read(charArr);
+                break;
+            }
+            String line = bufferedReader.readLine();
+            if (line == null) {
+                break;
+            }
+            if (line.startsWith("Content-Length:")) {
+                charArr = new char[Integer.parseInt(line.split(" ")[1])];
+            }
+            if (line.isEmpty()) {
+                check = true;
+            }
+        }
+        StringBuilder req = new StringBuilder();
+        for (char c : charArr) {
+            req.append(c);
+        }
+        return req.toString();
     }
 
     private List<String> getPageList() {
@@ -90,9 +121,26 @@ public class ServerThread extends Thread {
     /*
      * Method for handling all incoming POST requests
      */
-    // TODO: Figure out a way to retrieve the body of a POST request
-    public void post() {
-        // Do stuff here
+    public void post(String fullPath, String body) {
+        try {
+            PrintStream printStream = new PrintStream(socket.getOutputStream(), true);
+
+            printStream.println("HTTP/1.1 200 OK");
+            printStream.println("Content-Length: 19");
+            printStream.println("Content-Type: application/json");
+            printStream.println();
+            printStream.println("{");
+            printStream.println("\t\"success\":\"ok\"");
+            printStream.println("}");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*
+     * Method for handling all incoming HEAD requests
+     */
+    private void head() {
     }
 
 }
