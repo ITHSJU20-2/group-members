@@ -3,10 +3,11 @@ package se.iths.groupmembers.router;
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
 public class LoadHandler {
 
-    public static void load(Socket socket, String fileName, ContentType contentType, Status status) {
+    public static void load(Socket socket, String fileName, Status status) {
         if (fileName.isEmpty()) {
             fileName = "index.html";
         }
@@ -32,10 +33,11 @@ public class LoadHandler {
 
             String html = new String(data1, StandardCharsets.UTF_8);
 
+            String contentType = Files.probeContentType(file.toPath());
 
             printStream.printf("HTTP/1.1 %d %s%n", status.getStatus(), status.getStatusString());
             printStream.println("Content-Length: " + html.getBytes().length);
-            printStream.println("Content-Type: " + contentType.getContentType());
+            printStream.println("Content-Type: " + contentType);
             printStream.println();
             printStream.println(html);
 
