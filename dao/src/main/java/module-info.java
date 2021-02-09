@@ -1,5 +1,4 @@
-
-module se.iths.db {
+module dao {
     requires java.persistence;
     requires java.sql;
     requires org.hibernate.orm.core;

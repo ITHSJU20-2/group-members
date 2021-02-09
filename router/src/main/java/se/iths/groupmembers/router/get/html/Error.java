@@ -1,10 +1,10 @@
-package se.iths.groupmembers.router;
+package se.iths.groupmembers.router.get.html;
 
+import se.iths.groupmembers.router.LoadHandler;
+import se.iths.groupmembers.router.Status;
 import se.iths.groupmembers.spi.Page;
 
-import java.io.*;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 
 public class Error implements Page {
 
@@ -15,8 +15,7 @@ public class Error implements Page {
     }
     @Override
     public void load(Socket socket) {
-        File file = new File(new File("router/src/main/resources/static/error.html").getAbsoluteFile().toString());
-        LoadHandler.load(socket, file, "text/html");
+        LoadHandler.load(socket, path, Status.NOT_FOUND);
     }
 
     @Override

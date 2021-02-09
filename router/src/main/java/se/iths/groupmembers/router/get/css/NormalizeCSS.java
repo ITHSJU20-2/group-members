@@ -1,8 +1,9 @@
-package se.iths.groupmembers.router;
+package se.iths.groupmembers.router.get.css;
 
+import se.iths.groupmembers.router.LoadHandler;
+import se.iths.groupmembers.router.Status;
 import se.iths.groupmembers.spi.Page;
 
-import java.io.File;
 import java.net.Socket;
 
 public class NormalizeCSS implements Page {
@@ -14,8 +15,7 @@ public class NormalizeCSS implements Page {
 
     @Override
     public void load(Socket socket) {
-        File file = new File(new File("router/src/main/resources/static/normalize.css").getAbsoluteFile().toString());
-        LoadHandler.load(socket, file, "text/css");
+        LoadHandler.load(socket, path, Status.OK);
     }
 
     @Override
