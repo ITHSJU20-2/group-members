@@ -3,41 +3,53 @@ package se.iths.groupmembers.router;
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
 public class LoadHandler {
 
-    public static void load(Socket socket, File file, String contentType) {
-        try {
-        PrintStream printStream = new PrintStream(socket.getOutputStream());
-        int length = 0;
-        FileInputStream fileInputStream = new FileInputStream(file);
-
-        byte[] bytes = new byte[1024];
-
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-
-        while ((length = fileInputStream.read(bytes)) != -1) {
-            bos.write(bytes, 0, length);
+    public static void load(Socket socket, String fileName, Status status) {
+        if (fileName.isEmpty()) {
+            fileName = "index.html";
         }
-        bos.flush();
-        bos.close();
-        byte[] data1 = bos.toByteArray();
+        if (!fileName.contains(".")) {
+            fileName += ".html";
+        }
+        try {
+            PrintStream printStream = new PrintStream(socket.getOutputStream());
+            int length;
+            File file = new File(new File("router/src/main/resources/static/" + fileName).getAbsoluteFile().toString());
+            FileInputStream fileInputStream = new FileInputStream(file);
 
-        String html = new String(data1, StandardCharsets.UTF_8);
+            byte[] bytes = new byte[1024];
 
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
-        printStream.println("HTTP/1.1 200 OK");
-        printStream.println("Content-Length: " + html.getBytes().length);
-        printStream.println("Content-Type: " + contentType);
-        printStream.println();
-        printStream.println(html);
+            while ((length = fileInputStream.read(bytes)) != -1) {
+                bos.write(bytes, 0, length);
+            }
+            bos.flush();
+            bos.close();
+            byte[] data1 = bos.toByteArray();
 
-        printStream.flush();
-        printStream.close();
+            String contentType = Files.probeContentType(file.toPath());
 
-        fileInputStream.close();
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
+            printStream.printf("HTTP/1.1 %d %s%n", status.getStatus(), status.getStatusString());
+            printStream.println("Content-Length: " + data1.length);
+            printStream.println("Content-Type: " + contentType);
+            printStream.println();
+
+            if (!contentType.startsWith("image") && !contentType.startsWith("application")) {
+                String contents = new String(data1, StandardCharsets.UTF_8);
+                printStream.println(contents);
+            } else {
+                printStream.write(data1);
+            }
+            printStream.flush();
+            printStream.close();
+
+            fileInputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
