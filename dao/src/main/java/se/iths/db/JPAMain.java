@@ -7,6 +7,8 @@ import java.util.List;
 
 public class JPAMain {
     public static void main(String[] args) {
+
+
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("JPAMarcus");
 
         EntityManager em = emf.createEntityManager();
