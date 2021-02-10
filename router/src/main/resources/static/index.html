@@ -10,15 +10,64 @@
 
     <link type="text/css" rel="stylesheet" href="./css/normalize.css">
     <link type="text/css" rel="stylesheet" href="./css/main.css">
+    <script src="https://kit.fontawesome.com/215fcec735.js" crossorigin="annonymus"></script>
+
 </head>
 <body>
-    <h1>Hello World</h1>
-    <a href="/error">Error Page</a>
+
+    <div class="column topnav">
+        <a class="active" href="#home">Home</a>
+        <a href="#database">Database</a>
+        <a href="#files">Files</a>
+        <a href="/error">Error Page</a>
+    </div>
+
+    <div class="column search_bar" style="background-color:#aaa;">
+        <input type="text" id="user" placeholder="Enter name..">
+        <a id="link" href="" hidden></a>
+        <div class="autocomplete"></div>
+        <div id="search"><i class="fas fa-search"></i></div>
+    </div>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        /* Styling for the header */
+        .Header {
+            background-color: #f1f1f1;
+            padding: 30px;
+            text-align: center;
+            font-size: 35px;
+        }
+
+        /* Create columns that floats next to each other */
+        .column {
+            float: top;
+            padding: 10px;
+            height: 100px;
+        }
+
+        /* Left column with links */
+        .topnav {
+            width: 25%;
+        }
+
+        /* Search bar column in middle */
+        .search_bar {
+            width: 100%;
+            text-align: center;
+            float: bottom;
+            alignment: center;
+
+        }
+
+    </style>
+
 </body>
-<div class="topnav">
-    <a class="active" href="#home">Home</a>
-    <a href="#database">Database</a>
-    <a href="#files">Files</a>
-    <input type="text" placeholder="Enter name..">
-</div>
 </html>
