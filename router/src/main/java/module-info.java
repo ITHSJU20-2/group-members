@@ -1,6 +1,7 @@
 import se.iths.groupmembers.router.get.css.MainCSS;
 import se.iths.groupmembers.router.get.css.NormalizeCSS;
 import se.iths.groupmembers.router.get.html.Error;
+import se.iths.groupmembers.router.get.html.GetUsers;
 import se.iths.groupmembers.router.get.html.Index;
 import se.iths.groupmembers.router.get.html.Person;
 import se.iths.groupmembers.router.get.img.CatIMG;
@@ -10,5 +11,7 @@ import se.iths.groupmembers.spi.Page;
 
 module router {
     requires spi;
-    provides Page with Index, Error, Person, NormalizeCSS, MainCSS, CatIMG, Laboration1PDF, PersonJS;
+    requires dao;
+    requires com.google.gson;
+    provides Page with Index, Error, Person, NormalizeCSS, MainCSS, CatIMG, Laboration1PDF, PersonJS, GetUsers;
 }

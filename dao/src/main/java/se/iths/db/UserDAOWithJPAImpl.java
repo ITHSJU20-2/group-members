@@ -19,4 +19,14 @@ public class UserDAOWithJPAImpl implements UserDAO {
         em.getTransaction().commit();
         return list;
     }
+
+    @Override
+    public List<User> getAll() {
+        List<User> list;
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        list = em.createQuery("from User u", User.class).getResultList();
+        em.getTransaction().commit();
+        return list;
+    }
 }

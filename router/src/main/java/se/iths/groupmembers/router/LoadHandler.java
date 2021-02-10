@@ -8,12 +8,14 @@ import java.nio.file.Files;
 public class LoadHandler {
 
     public static void load(Socket socket, String fileName, Status status) {
+
         if (fileName.isEmpty()) {
             fileName = "index.html";
         }
         if (!fileName.contains(".")) {
             fileName += ".html";
         }
+
         try {
             PrintStream printStream = new PrintStream(socket.getOutputStream());
             int length;
