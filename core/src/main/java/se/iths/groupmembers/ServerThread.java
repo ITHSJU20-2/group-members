@@ -33,9 +33,8 @@ public class ServerThread extends Thread {
              * Creates a BufferedReader and reads the first header line so that we can get the request method and the
              * path
              */
-            // TODO: Retrieve the body of the incoming request and store for later (POST requests)
-            BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            String headerLine = input.readLine();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            String headerLine = bufferedReader.readLine();
             if (headerLine == null) {
                 return;
             }
@@ -47,16 +46,43 @@ public class ServerThread extends Thread {
              */
             RequestMethod requestMethod = RequestMethod.valueOf(header[0]);
             switch (requestMethod) {
-                case GET:
-                    get(header[1]);
-                    break;
-                case POST:
-                    post();
-                    break;
+                case GET -> get(header[1]);
+                case POST -> {
+                    String req = readBody(bufferedReader);
+                    post(header[1], req);
+                }
+                case HEAD -> head();
             }
+            socket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private String readBody(BufferedReader bufferedReader) throws IOException {
+        boolean check = false;
+        char[] charArr = new char[1024];
+        while (true) {
+            if (check) {
+                bufferedReader.read(charArr);
+                break;
+            }
+            String line = bufferedReader.readLine();
+            if (line == null) {
+                break;
+            }
+            if (line.startsWith("Content-Length:")) {
+                charArr = new char[Integer.parseInt(line.split(" ")[1])];
+            }
+            if (line.isEmpty()) {
+                check = true;
+            }
+        }
+        StringBuilder req = new StringBuilder();
+        for (char c : charArr) {
+            req.append(c);
+        }
+        return req.toString();
     }
 
     private List<String> getPageList() {
@@ -94,9 +120,24 @@ public class ServerThread extends Thread {
     /*
      * Method for handling all incoming POST requests
      */
-    // TODO: Figure out a way to retrieve the body of a POST request
-    public void post() {
-        // Do stuff here
+    public void post(String fullPath, String body) {
+        String[] path = fullPath.split("\\?", 2);
+        String page = path[0].substring(1);
+        if (pageList.contains(page)) {
+            pages.stream().filter(reqPage -> reqPage.get().getPath().equals(page)).collect(Collectors.toList()).get(0).get().load(socket, body);
+            return;
+        }
+
+        // This is supposed to stay at the very bottom as a way to catch anything slipping through when nothing matches
+        // so it will fallback to the error page.
+        // Until we figure out how to properly setup a fallback error page this will have to do.
+        pages.stream().filter(reqPage -> reqPage.get().getPath().equals("error")).collect(Collectors.toList()).get(0).get().load(socket);
+    }
+
+    /*
+     * Method for handling all incoming HEAD requests
+     */
+    private void head() {
     }
 
 }

@@ -21,13 +21,21 @@ public class UserDAOWithJPAImpl implements UserDAO {
     }
 
     @Override
-    public List<User> getByLastName(String lastName) {
+    public List<User> getAll() {
         List<User> list;
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        list = em.createQuery("from User u where u.lastName = :lastName", User.class)
-                .setParameter("lastName", lastName).getResultList();
+        list = em.createQuery("from User u", User.class).getResultList();
         em.getTransaction().commit();
         return list;
+    }
+
+    @Override
+    public boolean add(String firstName, String lastName) {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        em.persist(new User(firstName, lastName));
+        em.getTransaction().commit();
+        return true;
     }
 }
