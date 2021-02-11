@@ -5,12 +5,16 @@ VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-r
 OS=$(uname)
 
 SEP=";" # For some reason Windows require a semicolon which breaks the script on MacOS
-if [[ "$OS =~ ^darwin" ]];
-then
-  SEP=":"
-fi
+#if [[ "$OS =~ ^darwin" ]];
+#then
+#  SEP=":"
+#fi
 
 clear
 # Build and run the application
 mvn clean package
 java --module-path target/core-"$VERSION".jar"$SEP"target/modules -m core/se.iths.groupmembers.Main
+
+#
+# java --module-path target/core-0.1.0.jar;target/modules -m core/se.iths.groupmembers.Main
+

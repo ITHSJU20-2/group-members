@@ -38,8 +38,6 @@ public class LoadHandler {
                 contentType = "text/javascript";
             }
 
-            System.out.println(contentType);
-
             printStream.printf("HTTP/1.1 %d %s%n", status.getStatus(), status.getStatusString());
             printStream.println("Content-Length: " + data1.length);
             printStream.println("Content-Type: " + contentType);
