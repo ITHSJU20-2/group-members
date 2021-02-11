@@ -7,15 +7,13 @@ import java.nio.file.Files;
 
 public class LoadHandler {
 
-    public static void load(Socket socket, String fileName, Status status) {
-
+    public static void load(Socket socket, String fileName, Status status, boolean head) {
         if (fileName.isEmpty()) {
             fileName = "index.html";
         }
         if (!fileName.contains(".")) {
             fileName += ".html";
         }
-
         try {
             PrintStream printStream = new PrintStream(socket.getOutputStream());
             int length;
@@ -34,17 +32,22 @@ public class LoadHandler {
             byte[] data1 = bos.toByteArray();
 
             String contentType = Files.probeContentType(file.toPath());
+            if (fileName.endsWith(".js")) {
+                contentType = "text/javascript";
+            }
 
             printStream.printf("HTTP/1.1 %d %s%n", status.getStatus(), status.getStatusString());
-            printStream.println("Content-Length: " + data1.length);
             printStream.println("Content-Type: " + contentType);
-            printStream.println();
+            printStream.println("Content-Length: " + data1.length);
+            if (!head) {
+                printStream.println();
 
-            if (!contentType.startsWith("image") && !contentType.startsWith("application")) {
-                String contents = new String(data1, StandardCharsets.UTF_8);
-                printStream.println(contents);
-            } else {
-                printStream.write(data1);
+                if (!contentType.startsWith("image") && !contentType.startsWith("application")) {
+                    String contents = new String(data1, StandardCharsets.UTF_8);
+                    printStream.println(contents);
+                } else {
+                    printStream.write(data1);
+                }
             }
             printStream.flush();
             printStream.close();

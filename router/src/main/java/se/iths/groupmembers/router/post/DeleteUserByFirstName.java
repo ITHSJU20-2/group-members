@@ -9,12 +9,12 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Map;
 
-public class AddUser implements Page {
+public class DeleteUserByFirstName implements Page {
 
     private final String path;
 
-    public AddUser() {
-        path = "adduser";
+    public DeleteUserByFirstName(){
+        path="deleteuserbyfirstname";
     }
 
     @Override
@@ -26,7 +26,7 @@ public class AddUser implements Page {
     public void load(Socket socket, String body, boolean head) {
         UserDAOWithJPAImpl dao = new UserDAOWithJPAImpl();
         Map<String, String> map = new Gson().fromJson(body, Map.class);
-        dao.add(map.get("firstName"), map.get("lastName"));
+        dao.removeByFirstName(map.get("firstName"));
         try {
             String statusString = "{\n\"success\":\"ok\"\n}";
             PrintStream printStream = new PrintStream(socket.getOutputStream());
