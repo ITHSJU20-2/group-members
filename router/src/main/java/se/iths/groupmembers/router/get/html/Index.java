@@ -19,6 +19,10 @@ public class Index implements Page {
     }
 
     @Override
+    public void load(Socket socket, String body) {
+    }
+
+    @Override
     public String getPath() {
         return path;
     }

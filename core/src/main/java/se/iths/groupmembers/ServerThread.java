@@ -5,7 +5,6 @@ import se.iths.groupmembers.spi.Page;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -122,19 +121,17 @@ public class ServerThread extends Thread {
      * Method for handling all incoming POST requests
      */
     public void post(String fullPath, String body) {
-        try {
-            PrintStream printStream = new PrintStream(socket.getOutputStream(), true);
-
-            printStream.println("HTTP/1.1 200 OK");
-            printStream.println("Content-Length: 19");
-            printStream.println("Content-Type: application/json");
-            printStream.println();
-            printStream.println("{");
-            printStream.println("\t\"success\":\"ok\"");
-            printStream.println("}");
-        } catch (IOException e) {
-            e.printStackTrace();
+        String[] path = fullPath.split("\\?", 2);
+        String page = path[0].substring(1);
+        if (pageList.contains(page)) {
+            pages.stream().filter(reqPage -> reqPage.get().getPath().equals(page)).collect(Collectors.toList()).get(0).get().load(socket, body);
+            return;
         }
+
+        // This is supposed to stay at the very bottom as a way to catch anything slipping through when nothing matches
+        // so it will fallback to the error page.
+        // Until we figure out how to properly setup a fallback error page this will have to do.
+        pages.stream().filter(reqPage -> reqPage.get().getPath().equals("error")).collect(Collectors.toList()).get(0).get().load(socket);
     }
 
     /*
