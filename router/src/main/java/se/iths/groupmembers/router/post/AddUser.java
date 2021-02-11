@@ -18,12 +18,12 @@ public class AddUser implements Page {
     }
 
     @Override
-    public void load(Socket socket) {
-        load(socket, "");
+    public void load(Socket socket, boolean head) {
+        load(socket, "", head);
     }
 
     @Override
-    public void load(Socket socket, String body) {
+    public void load(Socket socket, String body, boolean head) {
         UserDAOWithJPAImpl dao = new UserDAOWithJPAImpl();
         Map<String, String> map = new Gson().fromJson(body, Map.class);
         dao.add(map.get("firstName"), map.get("lastName"));
@@ -32,10 +32,12 @@ public class AddUser implements Page {
             PrintStream printStream = new PrintStream(socket.getOutputStream());
 
             printStream.println("HTTP/1.1 200 OK");
-            printStream.println("Content-Length: " + (statusString.length()));
             printStream.println("Content-Type: application/json");
-            printStream.println();
-            printStream.println(statusString);
+            printStream.println("Content-Length: " + (statusString.length()));
+            if (!head) {
+                printStream.println();
+                printStream.println(statusString);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
