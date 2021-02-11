@@ -20,6 +20,10 @@ public class PersonJS implements Page {
     }
 
     @Override
+    public void load(Socket socket, String body) {
+    }
+
+    @Override
     public String getPath() {
         return path;
     }

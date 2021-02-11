@@ -9,13 +9,19 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private String id;
+
     private String firstName;
+
     private String lastName;
 
     public User() {
 
+    }
+
+    public User(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     public void setId() {
@@ -50,6 +56,6 @@ public class User {
 
     @Override
     public String toString() {
-        return "User [id=" + id + ", name =" + firstName + " " + lastName + "]";
+        return "User id=" + id + ", name = " + firstName + " " + lastName;
     }
 }
