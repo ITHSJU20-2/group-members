@@ -20,7 +20,7 @@ public class GetUsers implements Page {
     }
 
     @Override
-    public void load(Socket socket) {
+    public void load(Socket socket, boolean head) {
         try {
 
             GsonBuilder builder = new GsonBuilder();
@@ -40,17 +40,20 @@ public class GetUsers implements Page {
             PrintStream printStream = new PrintStream(socket.getOutputStream());
 
             printStream.println("HTTP/1.1 200 OK");
-            printStream.println("Content-Length: " + (json.toString().length()+3));
             printStream.println("Content-Type: application/json");
-            printStream.println();
-            printStream.println(json);
+            printStream.println("Content-Length: " + (json.toString().length() + 3));
+            if (!head) {
+                printStream.println();
+                printStream.println(json);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void load(Socket socket, String body) {
+    public void load(Socket socket, String body, boolean head) {
+        load(socket, head);
     }
 
     @Override

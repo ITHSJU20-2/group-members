@@ -18,12 +18,12 @@ public class DeleteUserByLastName implements Page {
     }
 
     @Override
-    public void load(Socket socket) {
-        load(socket, "");
+    public void load(Socket socket, boolean head) {
+        load(socket, "", head);
     }
 
     @Override
-    public void load(Socket socket, String body) {
+    public void load(Socket socket, String body, boolean head) {
         UserDAOWithJPAImpl dao = new UserDAOWithJPAImpl();
         Map<String, String> map = new Gson().fromJson(body, Map.class);
         dao.removeByLastName((map.get("lastName")));
@@ -34,8 +34,10 @@ public class DeleteUserByLastName implements Page {
             printStream.println("HTTP/1.1 200 OK");
             printStream.println("Content-Length: " + (statusString.length()));
             printStream.println("Content-Type: application/json");
-            printStream.println();
-            printStream.println(statusString);
+            if (!head) {
+                printStream.println();
+                printStream.println(statusString);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
