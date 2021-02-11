@@ -33,6 +33,10 @@ public class LoadHandler {
 
             String contentType = Files.probeContentType(file.toPath());
 
+            if(fileName.endsWith(".js")){
+                contentType = "text/javascript";
+            }
+
             printStream.printf("HTTP/1.1 %d %s%n", status.getStatus(), status.getStatusString());
             printStream.println("Content-Length: " + data1.length);
             printStream.println("Content-Type: " + contentType);
