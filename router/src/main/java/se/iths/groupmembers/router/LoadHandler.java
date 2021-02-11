@@ -32,6 +32,9 @@ public class LoadHandler {
             byte[] data1 = bos.toByteArray();
 
             String contentType = Files.probeContentType(file.toPath());
+            if (fileName.endsWith(".js")) {
+                contentType = "text/javascript";
+            }
 
             System.out.println(contentType);
 
