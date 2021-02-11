@@ -9,12 +9,12 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Map;
 
-public class DeleteUser implements Page {
+public class DeleteUserByLastName implements Page {
 
     private final String path;
 
-    public DeleteUser(){
-        path="deleteuser";
+    public DeleteUserByLastName(){
+        path="deleteuserbylastname";
     }
 
     @Override
@@ -26,36 +26,20 @@ public class DeleteUser implements Page {
     public void load(Socket socket, String body) {
         UserDAOWithJPAImpl dao = new UserDAOWithJPAImpl();
         Map<String, String> map = new Gson().fromJson(body, Map.class);
-        dao.removeByFirstName(map.get("firstName"));
-
+        dao.removeByLastName((map.get("lastName")));
         try {
-            String whatEver = "{success:  ok}";
+            String statusString = "{\n\"success\":\"ok\"\n}";
             PrintStream printStream = new PrintStream(socket.getOutputStream());
 
             printStream.println("HTTP/1.1 200 OK");
-            printStream.println("Content-Length: " + (whatEver.length()));
+            printStream.println("Content-Length: " + (statusString.length()));
             printStream.println("Content-Type: application/json");
             printStream.println();
-            printStream.println(whatEver);
+            printStream.println(statusString);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        catch (IOException ignored){}
     }
-
-
-
-    /*UserDAOWithJPAImpl dao = new UserDAOWithJPAImpl();
-    Map<String, String> map = new HashMap<>();
-    body = body.replaceAll("\\{", "").replaceAll(",", "").replaceAll("\"", "").replaceAll("}", "").replaceAll("\t", "").replaceAll(" ", "");
-    String[] arr = body.split("\\W");
-        System.out.println(arr.length);
-        if (arr.length != 5) {
-        return;
-    }
-        System.out.println("yay");
-        map.put(arr[1], arr[2]);
-        map.put(arr[3], arr[4]);
-        dao.add(map.get("firstName"), map.get("lastName"));
-        */
 
     @Override
     public String getPath() {

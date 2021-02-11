@@ -5,10 +5,12 @@ import se.iths.groupmembers.router.get.html.GetUsers;
 import se.iths.groupmembers.router.get.html.Index;
 import se.iths.groupmembers.router.get.html.Person;
 import se.iths.groupmembers.router.get.img.CatIMG;
+import se.iths.groupmembers.router.get.js.MainJS;
 import se.iths.groupmembers.router.get.js.PersonJS;
 import se.iths.groupmembers.router.get.pdf.Laboration1PDF;
 import se.iths.groupmembers.router.post.AddUser;
-import se.iths.groupmembers.router.post.DeleteUser;
+import se.iths.groupmembers.router.post.DeleteUserByFirstName;
+import se.iths.groupmembers.router.post.DeleteUserByLastName;
 import se.iths.groupmembers.spi.Page;
 
 module router {
@@ -16,5 +18,5 @@ module router {
     requires dao;
     requires com.google.gson;
     provides Page with Index, Error, Person, NormalizeCSS, MainCSS, CatIMG, Laboration1PDF, PersonJS, GetUsers,
-            AddUser, DeleteUser;
+            AddUser, DeleteUserByFirstName, DeleteUserByLastName, MainJS;
 }
