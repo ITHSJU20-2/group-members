@@ -42,7 +42,7 @@ public class GetUsers implements Page {
             /*
              * You might need to uncomment the line below for this route to work properly (dunno why) ¯\_(ツ)_/¯
              */
-//             contentLength += 3;
+             contentLength += 3;
 
             PrintStream printStream = new PrintStream(socket.getOutputStream());
 
