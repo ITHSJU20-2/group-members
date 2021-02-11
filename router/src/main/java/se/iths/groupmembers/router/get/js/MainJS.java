@@ -15,13 +15,13 @@ public class MainJS implements Page {
     }
 
     @Override
-    public void load(Socket socket) {
-        LoadHandler.load(socket, path, Status.OK);
+    public void load(Socket socket, boolean head) {
+        LoadHandler.load(socket, path, Status.OK, head);
     }
 
     @Override
-    public void load(Socket socket, String body) {
-
+    public void load(Socket socket, String body, boolean head) {
+        load(socket, head);
     }
 
     @Override
