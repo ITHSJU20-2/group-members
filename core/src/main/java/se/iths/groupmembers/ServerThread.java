@@ -46,12 +46,16 @@ public class ServerThread extends Thread {
              */
             RequestMethod requestMethod = RequestMethod.valueOf(header[0]);
             switch (requestMethod) {
-                case GET -> get(header[1]);
-                case POST -> {
+                case GET:
+                    get(header[1]);
+                    break;
+                case POST:
                     String req = readBody(bufferedReader);
                     post(header[1], req);
-                }
-                case HEAD -> head();
+                    break;
+                case HEAD:
+                    head();
+                    break;
             }
             socket.close();
         } catch (IOException e) {

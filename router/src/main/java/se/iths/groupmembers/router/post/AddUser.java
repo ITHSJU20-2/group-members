@@ -24,7 +24,6 @@ public class AddUser implements Page {
     public void load(Socket socket, String body) {
         UserDAOWithJPAImpl dao = new UserDAOWithJPAImpl();
         Map<String, String> map = new Gson().fromJson(body, Map.class);
-
         dao.add(map.get("firstName"), map.get("lastName"));
     }
 

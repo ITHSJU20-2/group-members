@@ -38,4 +38,35 @@ public class UserDAOWithJPAImpl implements UserDAO {
         em.getTransaction().commit();
         return true;
     }
+
+    @Override
+    public boolean removeByFirstName(String firstName) {
+        boolean success = false;
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        User u = em.createQuery("from User u where u.firstName = :firstName", User.class)
+                .setParameter("firstName", firstName).getSingleResult();
+        System.out.println(u);
+        if (u != null)
+            em.remove(u);
+        success = true;
+        em.getTransaction().commit();
+        return success;
+    }
+
+    @Override
+    public boolean removeByLastName(String lastName) {
+        boolean success = false;
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        User u = em.createQuery("from User u where u.lastName = :lastName", User.class)
+                .setParameter("lastName", lastName).getSingleResult();
+        System.out.println(u);
+        if (u != null)
+            em.remove(u);
+        success = true;
+        em.getTransaction().commit();
+        return success;
+    }
 }
+
