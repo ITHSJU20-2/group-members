@@ -40,7 +40,7 @@ public class GetUsers implements Page {
             PrintStream printStream = new PrintStream(socket.getOutputStream());
 
             printStream.println("HTTP/1.1 200 OK");
-            printStream.println("Content-Length: " + (json.toString().length()+3));
+            printStream.println("Content-Length: " + json.toString().length());
             printStream.println("Content-Type: application/json");
             printStream.println();
             printStream.println(json);

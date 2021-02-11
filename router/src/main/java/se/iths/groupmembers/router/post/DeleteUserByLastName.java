@@ -27,18 +27,18 @@ public class DeleteUserByLastName implements Page {
         UserDAOWithJPAImpl dao = new UserDAOWithJPAImpl();
         Map<String, String> map = new Gson().fromJson(body, Map.class);
         dao.removeByLastName((map.get("lastName")));
-
         try {
-            String whatEver = "{success:  ok}";
+            String statusString = "{\n\"success\":\"ok\"\n}";
             PrintStream printStream = new PrintStream(socket.getOutputStream());
 
             printStream.println("HTTP/1.1 200 OK");
-            printStream.println("Content-Length: " + (whatEver.length()));
+            printStream.println("Content-Length: " + (statusString.length()));
             printStream.println("Content-Type: application/json");
             printStream.println();
-            printStream.println(whatEver);
+            printStream.println(statusString);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        catch (IOException ignored){}
     }
 
     @Override
