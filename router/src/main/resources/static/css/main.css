@@ -75,3 +75,19 @@ body {
     color: #333;
     cursor: pointer;
 }
+
+.topnav {
+    display: flex;
+    flex-direction: row;
+}
+
+.topnav a {
+    text-decoration: none;
+    color: black;
+    padding: 0 10px;
+}
+
+.topnav a:hover {
+    text-decoration: underline;
+    color: red;
+}
