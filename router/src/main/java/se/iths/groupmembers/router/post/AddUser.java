@@ -1,10 +1,10 @@
 package se.iths.groupmembers.router.post;
 
+import com.google.gson.Gson;
 import se.iths.db.UserDAOWithJPAImpl;
 import se.iths.groupmembers.spi.Page;
 
 import java.net.Socket;
-import java.util.HashMap;
 import java.util.Map;
 
 public class AddUser implements Page {
@@ -23,16 +23,8 @@ public class AddUser implements Page {
     @Override
     public void load(Socket socket, String body) {
         UserDAOWithJPAImpl dao = new UserDAOWithJPAImpl();
-        Map<String, String> map = new HashMap<>();
-        body = body.replaceAll("\\{", "").replaceAll(",", "").replaceAll("\"", "").replaceAll("}", "").replaceAll("\t", "").replaceAll(" ", "");
-        String[] arr = body.split("\\W");
-        System.out.println(arr.length);
-        if (arr.length != 5) {
-            return;
-        }
-        System.out.println("yay");
-        map.put(arr[1], arr[2]);
-        map.put(arr[3], arr[4]);
+        Map<String, String> map = new Gson().fromJson(body, Map.class);
+
         dao.add(map.get("firstName"), map.get("lastName"));
     }
 
