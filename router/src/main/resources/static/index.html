@@ -1,17 +1,94 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <link rel="shortcut icon" href="#">
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Demo Page</title>
 
-    <link type="text/css" rel="stylesheet" href="./css/normalize.css">
+    <!--    <link type="text/css" rel="stylesheet" href="./css/normalize.css">-->
     <link type="text/css" rel="stylesheet" href="./css/main.css">
+    <script src="https://kit.fontawesome.com/215fcec735.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <h1>Hello World</h1>
-    <a href="/error">Error Page</a>
+<h1>Hello World</h1>
+<a href="/error">Error Page</a>
 </body>
+<div class="wrapper">
+    <div class="topnav">
+        <a class="active" href="#home">Home</a>
+        <a href="#database">Database</a>
+        <a href="#files">Files</a>
+    </div>
+    <div class="search-wrapper">
+        <a href="" class="search-link" hidden></a>
+        <input type="text" class="search-input" hidden placeholder="Loading...">
+        <div class="autocomplete"></div>
+        <div class="search-icon"><i class="fas fa-search"></i></div>
+    </div>
+</div>
+
+<script>
+    let suggestions = [];
+    const searchWrapper = document.querySelector('.search-wrapper');
+    const input = document.querySelector('.search-input');
+    const autocomplete = document.querySelector('.autocomplete');
+    const icon = document.querySelector('.search-icon');
+    const link = document.querySelector('.search-link');
+
+    fetch('/getusers').then(response => response.json()).then(res => {
+        res.forEach(user => suggestions.push(user.firstName + ' ' + user.lastName));
+        input.addEventListener('keyup', (e) => {
+            let userInput = e.target.value;
+            let suggArr;
+            if (userInput) {
+                searchWrapper.classList.add('active');
+                icon.addEventListener('click', () => {
+                    link.setAttribute('href', '/person?name=' + userInput);
+                    link.click();
+                });
+                suggArr = suggestions.filter((data) => {
+                    return data.toLocaleLowerCase().startsWith(userInput.toLocaleLowerCase());
+                });
+                suggArr = suggArr.map((data) => {
+                    return data =
+                        '<li class="autocomplete-item"><img src="/img/cat.png" style="height: 20px; width: auto; padding-right: 10px;">' +
+                        data + '</li>';
+                });
+                showSuggestions(suggArr);
+                let allList = autocomplete.querySelectorAll('.autocomplete-item');
+                for (let i = 0; i < allList.length; i++) {
+                    allList[i].setAttribute('onclick', 'select(this)');
+                }
+            } else {
+                searchWrapper.classList.remove('active');
+            }
+        });
+        input.removeAttribute('hidden');
+        input.setAttribute('placeholder', 'Search...');
+    });
+
+    const select = (el) => {
+        let selectData = el.textContent;
+        input.value = selectData;
+        icon.addEventListener('click', () => {
+            link.setAttribute('href', '/person?name=' + selectData);
+            link.click();
+        });
+        searchWrapper.classList.remove('active');
+    }
+
+    const showSuggestions = (list) => {
+        let listData;
+        if (!list.length) {
+            listData = '<li class="autocomplete-item">' + input.value + '</li>';
+        } else {
+            listData = list.join('');
+        }
+        autocomplete.innerHTML = listData;
+    }
+
+</script>
 </html>

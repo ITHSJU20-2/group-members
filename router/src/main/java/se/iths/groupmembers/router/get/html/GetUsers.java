@@ -27,7 +27,7 @@ public class GetUsers implements Page {
             builder.setPrettyPrinting();
 
             Gson gson = builder.create();
-            StringBuilder json = new StringBuilder("{");
+            StringBuilder json = new StringBuilder("[");
 
             UserDAOWithJPAImpl dao = new UserDAOWithJPAImpl();
             List<User> userList = dao.getAll();
@@ -35,19 +35,22 @@ public class GetUsers implements Page {
             for (User user : userList) {
                 json.append(gson.toJson(user)).append(",");
             }
-            json.append("}");
+            json.deleteCharAt(json.lastIndexOf(",")).append("]");
 
             PrintStream printStream = new PrintStream(socket.getOutputStream());
 
             printStream.println("HTTP/1.1 200 OK");
-            printStream.println("Content-Length: " + json.toString().length());
+            printStream.println("Content-Length: " + (json.toString().length() + 3));
             printStream.println("Content-Type: application/json");
             printStream.println();
             printStream.println(json);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    @Override
+    public void load(Socket socket, String body) {
     }
 
     @Override

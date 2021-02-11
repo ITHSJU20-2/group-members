@@ -1,0 +1,77 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    padding: 0 20px;
+}
+
+.wrapper {
+    max-width: 450px;
+    margin: 150px auto;
+}
+
+.wrapper .search-wrapper {
+    background: white;
+    width: 100%;
+    position: relative;
+}
+
+.search-wrapper .search-input {
+    height: 55px;
+    width: 100%;
+    outline: none;
+    border: none;
+    padding: 0 60px 0 20px;
+    font-size: 18px;
+}
+
+.search-wrapper .autocomplete {
+    padding: 0;
+    opacity: 0;
+    pointer-events: none;
+    max-height: 280px;
+    overflow-y: auto;
+}
+
+.search-wrapper.active .autocomplete {
+    padding: 10px 8px;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.autocomplete .autocomplete-item {
+    list-style: none;
+    padding: 8px 12px;
+    display: none;
+    width: 100%;
+    cursor: default;
+}
+
+.search-wrapper.active .autocomplete .autocomplete-item {
+    display: block;
+}
+
+/*.search-wrapper:not(:has(.active)) .autocomplete .autocomplete-item {*/
+/*    display: none;*/
+/*}*/
+
+.autocomplete .autocomplete-item:hover {
+    background: #333;
+    color: white;
+}
+
+.search-wrapper .search-icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 55px;
+    width: 55px;
+    text-align: center;
+    line-height: 55px;
+    font-size: 20px;
+    color: #333;
+    cursor: pointer;
+}

@@ -7,4 +7,8 @@ public interface UserDAO {
     List<User> getByFirstName(String FirstName);
 
     List<User> getAll();
+
+    boolean add(String firstName, String lastName);
+
+    boolean removeByFirstName(String firstName);
 }
