@@ -29,4 +29,29 @@ public class UserDAOWithJPAImpl implements UserDAO {
         em.getTransaction().commit();
         return list;
     }
+
+    @Override
+    public boolean add(String firstName, String lastName) {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        em.persist(new User(firstName, lastName));
+        em.getTransaction().commit();
+        return true;
+    }
+
+    @Override
+    public boolean removeByFirstName(String firstName) {
+        boolean success = false;
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        User u = em.createQuery("from User u where u.firstName = :firstName", User.class)
+                .setParameter("firstName", firstName).getSingleResult();
+        System.out.println(u);
+        if (u != null)
+            em.remove(u);
+        success = true;
+        em.getTransaction().commit();
+        return success;
+    }
 }
+
