@@ -9,4 +9,6 @@ public interface UserDAO {
     List<User> getAll();
 
     boolean add(String firstName, String lastName);
+
+    boolean removeByFirstName(String firstName);
 }

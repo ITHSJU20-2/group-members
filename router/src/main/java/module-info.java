@@ -8,11 +8,13 @@ import se.iths.groupmembers.router.get.img.CatIMG;
 import se.iths.groupmembers.router.get.js.PersonJS;
 import se.iths.groupmembers.router.get.pdf.Laboration1PDF;
 import se.iths.groupmembers.router.post.AddUser;
+import se.iths.groupmembers.router.post.DeleteUser;
 import se.iths.groupmembers.spi.Page;
 
 module router {
     requires spi;
     requires dao;
     requires com.google.gson;
-    provides Page with Index, Error, Person, NormalizeCSS, MainCSS, CatIMG, Laboration1PDF, PersonJS, GetUsers, AddUser;
+    provides Page with Index, Error, Person, NormalizeCSS, MainCSS, CatIMG, Laboration1PDF, PersonJS, GetUsers,
+            AddUser, DeleteUser;
 }
