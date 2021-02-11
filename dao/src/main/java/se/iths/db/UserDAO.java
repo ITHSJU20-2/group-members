@@ -11,4 +11,6 @@ public interface UserDAO {
     boolean add(String firstName, String lastName);
 
     boolean removeByFirstName(String firstName);
+
+    boolean removeByLastName(String lastName);
 }

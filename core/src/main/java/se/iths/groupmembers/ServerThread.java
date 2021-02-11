@@ -47,14 +47,14 @@ public class ServerThread extends Thread {
             RequestMethod requestMethod = RequestMethod.valueOf(header[0]);
             switch (requestMethod) {
                 case GET:
-                    get(header[1]);
+                    get(header[1], false);
                     break;
                 case POST:
                     String req = readBody(bufferedReader);
                     post(header[1], req);
                     break;
                 case HEAD:
-                    head();
+                    get(header[1], true);
                     break;
             }
             socket.close();
@@ -98,11 +98,11 @@ public class ServerThread extends Thread {
     /*
      * Method for handling all incoming GET requests
      */
-    public void get(String fullPath) {
+    public void get(String fullPath, boolean head) {
         String[] path = fullPath.split("\\?", 2);
         String page = path[0].substring(1);
         if (pageList.contains(page)) {
-            pages.stream().filter(reqPage -> reqPage.get().getPath().equals(page)).collect(Collectors.toList()).get(0).get().load(socket);
+            pages.stream().filter(reqPage -> reqPage.get().getPath().equals(page)).collect(Collectors.toList()).get(0).get().load(socket, head);
             return;
         }
 
@@ -118,7 +118,7 @@ public class ServerThread extends Thread {
         // This is supposed to stay at the very bottom as a way to catch anything slipping through when nothing matches
         // so it will fallback to the error page.
         // Until we figure out how to properly setup a fallback error page this will have to do.
-        pages.stream().filter(reqPage -> reqPage.get().getPath().equals("error")).collect(Collectors.toList()).get(0).get().load(socket);
+        pages.stream().filter(reqPage -> reqPage.get().getPath().equals("error")).collect(Collectors.toList()).get(0).get().load(socket, head);
     }
 
     /*
@@ -128,20 +128,14 @@ public class ServerThread extends Thread {
         String[] path = fullPath.split("\\?", 2);
         String page = path[0].substring(1);
         if (pageList.contains(page)) {
-            pages.stream().filter(reqPage -> reqPage.get().getPath().equals(page)).collect(Collectors.toList()).get(0).get().load(socket, body);
+            pages.stream().filter(reqPage -> reqPage.get().getPath().equals(page)).collect(Collectors.toList()).get(0).get().load(socket, body, false);
             return;
         }
 
         // This is supposed to stay at the very bottom as a way to catch anything slipping through when nothing matches
         // so it will fallback to the error page.
         // Until we figure out how to properly setup a fallback error page this will have to do.
-        pages.stream().filter(reqPage -> reqPage.get().getPath().equals("error")).collect(Collectors.toList()).get(0).get().load(socket);
-    }
-
-    /*
-     * Method for handling all incoming HEAD requests
-     */
-    private void head() {
+        pages.stream().filter(reqPage -> reqPage.get().getPath().equals("error")).collect(Collectors.toList()).get(0).get().load(socket, false);
     }
 
 }
