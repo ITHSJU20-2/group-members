@@ -13,9 +13,14 @@ public class Error implements Page {
     public Error() {
         path = "error";
     }
+
     @Override
     public void load(Socket socket) {
         LoadHandler.load(socket, path, Status.NOT_FOUND);
+    }
+
+    @Override
+    public void load(Socket socket, String body) {
     }
 
     @Override
