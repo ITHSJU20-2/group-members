@@ -37,11 +37,18 @@ public class GetUsers implements Page {
             }
             json.deleteCharAt(json.lastIndexOf(",")).append("]");
 
+            int contentLength = json.toString().length();
+
+            /*
+             * You might need to uncomment the line below for this route to work properly (dunno why) ¯\_(ツ)_/¯
+             */
+//             contentLength += 3;
+
             PrintStream printStream = new PrintStream(socket.getOutputStream());
 
             printStream.println("HTTP/1.1 200 OK");
             printStream.println("Content-Type: application/json");
-            printStream.println("Content-Length: " + (json.toString().length() + 3));
+            printStream.println("Content-Length: " + contentLength);
             if (!head) {
                 printStream.println();
                 printStream.println(json);
