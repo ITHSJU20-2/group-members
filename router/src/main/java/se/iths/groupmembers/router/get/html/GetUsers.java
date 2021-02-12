@@ -1,12 +1,12 @@
 package se.iths.groupmembers.router.get.html;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import se.iths.db.JPA;
 import se.iths.db.User;
+import se.iths.groupmembers.router.LoadHandler;
+import se.iths.groupmembers.router.Status;
 import se.iths.groupmembers.spi.Page;
 
-import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
@@ -22,44 +22,25 @@ public class GetUsers implements Page {
     }
 
     @Override
-    public void doGet(Socket socket, boolean head) {
-        try {
+    public void doGet(Socket socket, boolean head, PrintStream printStream, Gson gson, JPA dao) {
+        StringBuilder json = new StringBuilder("[");
 
-            GsonBuilder builder = new GsonBuilder();
-            builder.setPrettyPrinting();
+        List<User> userList = dao.getAll();
 
-            Gson gson = builder.create();
-            StringBuilder json = new StringBuilder("[");
-
-            JPA dao = new JPA();
-            List<User> userList = dao.getAll();
-
-            for (User user : userList) {
-                json.append(gson.toJson(user)).append(",");
-            }
-            json.deleteCharAt(json.lastIndexOf(",")).append("]");
-
-            //CODE TO START DEFEATING THE MALEVOLENT 3...
-            byte[] bytes = json.toString().getBytes(StandardCharsets.UTF_8);
-
-
-            PrintStream printStream = new PrintStream(socket.getOutputStream());
-
-            printStream.println("HTTP/1.1 200 OK");
-            printStream.println("Content-Type: application/json");
-            printStream.println("Content-Length: " + bytes.length);
-            if (!head) {
-                printStream.println();
-                printStream.write(bytes);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        for (User user : userList) {
+            json.append(gson.toJson(user)).append(",");
         }
+        json.deleteCharAt(json.lastIndexOf(",")).append("]");
+
+        //CODE TO START DEFEATING THE MALEVOLENT 3...
+        byte[] output = json.toString().getBytes(StandardCharsets.UTF_8);
+
+        LoadHandler.print(printStream, output, Status.OK, "application/json", head);
     }
 
     @Override
-    public void doPost(Socket socket, String body, boolean head) {
-        doGet(socket, head);
+    public void doPost(Socket socket, String body, boolean head, PrintStream printStream, Gson gson, JPA dao) {
+        doGet(socket, head, printStream, gson, dao);
     }
 
     @Override

@@ -7,6 +7,7 @@ import se.iths.groupmembers.spi.Page;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -39,8 +40,6 @@ public class Server {
             System.out.println("Listening on http://localhost:" + port);
             while (true) {
                 Socket socket = serverSocket.accept();
-                // TODO: Use thread pool instead
-//                new ServerThread(socket).start();
                 executorService.execute(() -> handleConnection(socket));
             }
         } catch (IOException e) {
@@ -56,6 +55,7 @@ public class Server {
              * path
              */
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            PrintStream printStream = new PrintStream(socket.getOutputStream());
             String headerLine = bufferedReader.readLine();
             if (headerLine == null) {
                 return;
@@ -69,14 +69,14 @@ public class Server {
             RequestMethod requestMethod = RequestMethod.valueOf(header[0]);
             switch (requestMethod) {
                 case GET:
-                    get(socket, header[1], false);
+                    get(socket, header[1], false, printStream);
                     break;
                 case POST:
                     String req = readBody(bufferedReader);
-                    post(socket, header[1], req);
+                    post(socket, header[1], req, printStream);
                     break;
                 case HEAD:
-                    get(socket, header[1], true);
+                    get(socket, header[1], true, printStream);
                     break;
             }
             socket.close();
@@ -148,34 +148,34 @@ public class Server {
     /*
      * Method for handling all incoming GET requests
      */
-    public void get(Socket socket, String fullPath, boolean head) {
+    public void get(Socket socket, String fullPath, boolean head, PrintStream printStream) {
         String[] path = fullPath.split("\\?", 2);
         String page = path[0].substring(1);
         if (pageList.contains(page)) {
-            pages.stream().filter(reqPage -> reqPage.get().getPath().equals(page)).collect(Collectors.toList()).get(0).get().doGet(socket, head);
+            pages.stream().filter(reqPage -> reqPage.get().getPath().equals(page)).collect(Collectors.toList()).get(0).get().doGet(socket, head, printStream, gson, jpa);
             return;
         }
 
         // This is supposed to stay at the very bottom as a way to catch anything slipping through when nothing matches
         // so it will fallback to the error page.
         // Until we figure out how to properly setup a fallback error page this will have to do.
-        pages.stream().filter(reqPage -> reqPage.get().getPath().equals("error")).collect(Collectors.toList()).get(0).get().doGet(socket, head);
+        pages.stream().filter(reqPage -> reqPage.get().getPath().equals("error")).collect(Collectors.toList()).get(0).get().doGet(socket, head, printStream, gson, jpa);
     }
 
     /*
      * Method for handling all incoming POST requests
      */
-    public void post(Socket socket, String fullPath, String body) {
+    public void post(Socket socket, String fullPath, String body, PrintStream printStream) {
         String[] path = fullPath.split("\\?", 2);
         String page = path[0].substring(1);
         if (pageList.contains(page)) {
-            pages.stream().filter(reqPage -> reqPage.get().getPath().equals(page)).collect(Collectors.toList()).get(0).get().doPost(socket, body, false);
+            pages.stream().filter(reqPage -> reqPage.get().getPath().equals(page)).collect(Collectors.toList()).get(0).get().doPost(socket, body, false, printStream, gson, jpa);
             return;
         }
 
         // This is supposed to stay at the very bottom as a way to catch anything slipping through when nothing matches
         // so it will fallback to the error page.
         // Until we figure out how to properly setup a fallback error page this will have to do.
-        pages.stream().filter(reqPage -> reqPage.get().getPath().equals("error")).collect(Collectors.toList()).get(0).get().doGet(socket, false);
+        pages.stream().filter(reqPage -> reqPage.get().getPath().equals("error")).collect(Collectors.toList()).get(0).get().doGet(socket, false, printStream, gson, jpa);
     }
 }
