@@ -103,5 +103,22 @@ public boolean getByFirstName(String firstName) {
             return success;
     }
 
+    @Override
+    public boolean updateByFirstLast(String firstName, String lastName, String newFirstName, String newLastName) {
+        boolean success = false;
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        User u = em.createQuery("from User u where u.firstName = :firstName and u.lastName = :lastName", User.class)
+                .setParameter("firstName", firstName)
+                .setParameter("lastName", lastName).getSingleResult();
+        if (u != null) {
+            u.setFirstName(newFirstName);
+            u.setLastName(newLastName);
+            success = true;
+        }
+        em.getTransaction().commit();
+        return success;
+    }
+
 }
 
