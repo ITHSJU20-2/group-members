@@ -9,16 +9,34 @@ public class JPA implements UserDAO {
 
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("GroupMembers");
 
+@Override
+public boolean getByFirstName(String firstName) {
+    boolean success = false;
+    EntityManager em = emf.createEntityManager();
+    em.getTransaction().begin();
+    User u = em.createQuery("from User u where u.firstName = :firstName", User.class)
+            .setParameter("firstName", firstName).getSingleResult();
+        if (u != null) {
+            System.out.println(u);
+            success = true;
+        }
+    em.getTransaction().commit();
+    return success;
+}
+
+
     @Override
-    public List<User> getByFirstName(String firstName) {
-        List<User> list;
+    public boolean getById(int id){
+        boolean success = false;
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        list = em.createQuery("from User u where u.firstName = :firstName", User.class)
-                .setParameter("firstName", firstName).getResultList();
+        User u = em.find(User.class, id);
+        if (u != null) {
+            System.out.println(u);
+            success = true;
+        }
         em.getTransaction().commit();
-        return list;
-
+        return success;
     }
 
     @Override
@@ -84,5 +102,6 @@ public class JPA implements UserDAO {
             em.getTransaction().commit();
             return success;
     }
+
 }
 
