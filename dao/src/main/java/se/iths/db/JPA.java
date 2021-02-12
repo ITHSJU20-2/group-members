@@ -5,7 +5,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.util.List;
 
-public class UserDAOWithJPAImpl implements UserDAO {
+public class JPA implements UserDAO {
 
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("GroupMembers");
 
@@ -68,6 +68,21 @@ public class UserDAOWithJPAImpl implements UserDAO {
         success = true;
         em.getTransaction().commit();
         return success;
+    }
+
+    @Override
+    public boolean removeById(int id) {
+        boolean success = false;
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        User u = em.find(User.class, id);
+            if (u != null) {
+                em.remove(u);
+                success = true;
+                System.out.println("Record with ID " + u.getId() + " has been deleted from table");
+            }
+            em.getTransaction().commit();
+            return success;
     }
 }
 

@@ -14,3 +14,6 @@ clear
 # Build and run the application
 mvn clean package
 java --module-path target/core-"$VERSION".jar"$SEP"target/modules -m core/se.iths.groupmembers.Main
+
+#HERE IS THE WINDOWS VERSION
+#java --module-path target/core-0.1.0.jar;target/modules -m core/se.iths.groupmembers.Main
