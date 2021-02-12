@@ -6,20 +6,17 @@ import se.iths.db.User;
 import se.iths.groupmembers.router.LoadHandler;
 import se.iths.groupmembers.router.Status;
 import se.iths.groupmembers.spi.Page;
+import se.iths.groupmembers.spi.Path;
 
 import java.io.PrintStream;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-// TODO: Custom path annotation
+
+@Path(path = "getusers")
 public class GetUsers implements Page {
 
-    private final String path;
-
-    public GetUsers() {
-        path = "getusers";
-    }
 
     @Override
     public void doGet(Socket socket, boolean head, PrintStream printStream, Gson gson, JPA dao) {
@@ -41,10 +38,5 @@ public class GetUsers implements Page {
     @Override
     public void doPost(Socket socket, String body, boolean head, PrintStream printStream, Gson gson, JPA dao) {
         doGet(socket, head, printStream, gson, dao);
-    }
-
-    @Override
-    public String getPath() {
-        return path;
     }
 }

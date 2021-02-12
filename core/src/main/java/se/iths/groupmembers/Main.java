@@ -6,8 +6,6 @@ import se.iths.db.JPA;
 
 public class Main {
 
-    // TODO: Dependency injection
-
     private static final int PORT = 5050;
 
     public static void main(String[] args) {

@@ -3,6 +3,7 @@ package se.iths.groupmembers;
 import com.google.gson.Gson;
 import se.iths.db.JPA;
 import se.iths.groupmembers.spi.Page;
+import se.iths.groupmembers.spi.Path;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -141,7 +142,7 @@ public class Server {
 
     private List<String> getPageList() {
         List<String> routes = new ArrayList<>();
-        pages.forEach(page -> routes.add(page.getPath()));
+        pages.forEach(page -> routes.add(page.getClass().getAnnotation(Path.class).path()));
         return routes;
     }
 
@@ -152,14 +153,14 @@ public class Server {
         String[] path = fullPath.split("\\?", 2);
         String page = path[0].substring(1);
         if (pageList.contains(page)) {
-            pages.stream().filter(reqPage -> reqPage.get().getPath().equals(page)).collect(Collectors.toList()).get(0).get().doGet(socket, head, printStream, gson, jpa);
+            pages.stream().filter(reqPage -> reqPage.get().getClass().getAnnotation(Path.class).path().equals(page)).collect(Collectors.toList()).get(0).get().doGet(socket, head, printStream, gson, jpa);
             return;
         }
 
         // This is supposed to stay at the very bottom as a way to catch anything slipping through when nothing matches
         // so it will fallback to the error page.
         // Until we figure out how to properly setup a fallback error page this will have to do.
-        pages.stream().filter(reqPage -> reqPage.get().getPath().equals("error")).collect(Collectors.toList()).get(0).get().doGet(socket, head, printStream, gson, jpa);
+        pages.stream().filter(reqPage -> reqPage.get().getClass().getAnnotation(Path.class).path().equals("error")).collect(Collectors.toList()).get(0).get().doGet(socket, head, printStream, gson, jpa);
     }
 
     /*
@@ -169,13 +170,13 @@ public class Server {
         String[] path = fullPath.split("\\?", 2);
         String page = path[0].substring(1);
         if (pageList.contains(page)) {
-            pages.stream().filter(reqPage -> reqPage.get().getPath().equals(page)).collect(Collectors.toList()).get(0).get().doPost(socket, body, false, printStream, gson, jpa);
+            pages.stream().filter(reqPage -> reqPage.get().getClass().getAnnotation(Path.class).path().equals(page)).collect(Collectors.toList()).get(0).get().doPost(socket, body, false, printStream, gson, jpa);
             return;
         }
 
         // This is supposed to stay at the very bottom as a way to catch anything slipping through when nothing matches
         // so it will fallback to the error page.
         // Until we figure out how to properly setup a fallback error page this will have to do.
-        pages.stream().filter(reqPage -> reqPage.get().getPath().equals("error")).collect(Collectors.toList()).get(0).get().doGet(socket, false, printStream, gson, jpa);
+        pages.stream().filter(reqPage -> reqPage.get().getClass().getAnnotation(Path.class).path().equals("error")).collect(Collectors.toList()).get(0).get().doGet(socket, false, printStream, gson, jpa);
     }
 }
