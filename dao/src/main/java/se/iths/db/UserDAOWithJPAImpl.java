@@ -68,5 +68,20 @@ public class UserDAOWithJPAImpl implements UserDAO {
         em.getTransaction().commit();
         return success;
     }
+
+    @Override
+    public boolean updateWholeUser(String firstName, String lastName, String newFirstName, String newLastName) {
+        boolean success = false;
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        User u = em.find(User.class, firstName);
+        if (u != null ) {
+            u.setFirstName(newFirstName);
+            u.setLastName(newLastName);
+            success = true;
+        }
+        em.getTransaction().commit();
+        return success;
+    }
 }
 
