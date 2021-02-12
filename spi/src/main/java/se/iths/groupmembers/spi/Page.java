@@ -10,6 +10,4 @@ public interface Page {
     void doGet(Socket socket, boolean head, PrintStream printStream, Gson gson, JPA dao);
 
     void doPost(Socket socket, String body, boolean head, PrintStream printStream, Gson gson, JPA dao);
-
-    String getPath();
 }
