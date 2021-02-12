@@ -18,7 +18,7 @@ public class UpdateUser implements Page {
     }
 
     @Override
-    public void doGet(Socket socket, boolean head) {
+    public void doGet(Socket socket, boolean head, Gson gson, JPA dao) {
         doPost(socket, "", head);
     }
 
@@ -26,7 +26,7 @@ public class UpdateUser implements Page {
     public void doPost(Socket socket, String body, boolean head) {
         UserDAOWithJPAImpl dao = new UserDAOWithJPAImpl();
         Map<String, String> map = new Gson().fromJson(body, Map.class);
-        dao.updateWholeUser(
+        dao.updateByFirstLast(
                 map.get("firstName"),
                 map.get("lastName"),
                 map.get("newFirstName"),

@@ -70,7 +70,7 @@ public class UserDAOWithJPAImpl implements UserDAO {
     }
 
     @Override
-    public boolean updateWholeUser(String firstName, String lastName, String newFirstName, String newLastName) {
+    public boolean updateByFirstLast(String firstName, String lastName, String newFirstName, String newLastName) {
         boolean success = false;
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
