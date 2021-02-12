@@ -25,7 +25,6 @@ public class GetUsers implements Page {
     public void doGet(Socket socket, boolean head) {
         try {
 
-            // TODO: Refactor json to bytearray
             GsonBuilder builder = new GsonBuilder();
             builder.setPrettyPrinting();
 
@@ -34,9 +33,6 @@ public class GetUsers implements Page {
 
             UserDAOWithJPAImpl dao = new UserDAOWithJPAImpl();
             List<User> userList = dao.getAll();
-
-
-
 
             for (User user : userList) {
                 json.append(gson.toJson(user)).append(",");
