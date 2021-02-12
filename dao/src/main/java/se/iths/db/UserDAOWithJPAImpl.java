@@ -18,6 +18,7 @@ public class UserDAOWithJPAImpl implements UserDAO {
                 .setParameter("firstName", firstName).getResultList();
         em.getTransaction().commit();
         return list;
+
     }
 
     @Override

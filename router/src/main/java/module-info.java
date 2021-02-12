@@ -11,6 +11,7 @@ import se.iths.groupmembers.router.get.pdf.Laboration1PDF;
 import se.iths.groupmembers.router.post.AddUser;
 import se.iths.groupmembers.router.post.DeleteUserByFirstName;
 import se.iths.groupmembers.router.post.DeleteUserByLastName;
+import se.iths.groupmembers.router.post.GetUserByFirstName;
 import se.iths.groupmembers.spi.Page;
 
 module router {
@@ -18,5 +19,5 @@ module router {
     requires dao;
     requires com.google.gson;
     provides Page with Index, Error, Person, NormalizeCSS, MainCSS, CatIMG, Laboration1PDF, PersonJS, GetUsers,
-            AddUser, DeleteUserByFirstName, DeleteUserByLastName, MainJS;
+            AddUser, DeleteUserByFirstName, DeleteUserByLastName, MainJS, GetUserByFirstName;
 }
