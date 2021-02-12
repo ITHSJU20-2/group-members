@@ -2,8 +2,8 @@ package se.iths.groupmembers.router.get.html;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import se.iths.db.JPA;
 import se.iths.db.User;
-import se.iths.db.UserDAOWithJPAImpl;
 import se.iths.groupmembers.spi.Page;
 
 import java.io.IOException;
@@ -31,7 +31,7 @@ public class GetUsers implements Page {
             Gson gson = builder.create();
             StringBuilder json = new StringBuilder("[");
 
-            UserDAOWithJPAImpl dao = new UserDAOWithJPAImpl();
+            JPA dao = new JPA();
             List<User> userList = dao.getAll();
 
             for (User user : userList) {
@@ -41,7 +41,6 @@ public class GetUsers implements Page {
 
             //CODE TO START DEFEATING THE MALEVOLENT 3...
             byte[] bytes = json.toString().getBytes(StandardCharsets.UTF_8);
-            String contents = new String(bytes, StandardCharsets.UTF_8);
 
 
             PrintStream printStream = new PrintStream(socket.getOutputStream());
@@ -51,7 +50,7 @@ public class GetUsers implements Page {
             printStream.println("Content-Length: " + bytes.length);
             if (!head) {
                 printStream.println();
-                printStream.println(contents);
+                printStream.write(bytes);
             }
         } catch (IOException e) {
             e.printStackTrace();

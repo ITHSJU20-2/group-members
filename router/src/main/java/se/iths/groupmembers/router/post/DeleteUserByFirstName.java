@@ -1,7 +1,7 @@
 package se.iths.groupmembers.router.post;
 
 import com.google.gson.Gson;
-import se.iths.db.UserDAOWithJPAImpl;
+import se.iths.db.JPA;
 import se.iths.groupmembers.spi.Page;
 
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class DeleteUserByFirstName implements Page {
 
     @Override
     public void doPost(Socket socket, String body, boolean head) {
-        UserDAOWithJPAImpl dao = new UserDAOWithJPAImpl();
+        JPA dao = new JPA();
         Map<String, String> map = new Gson().fromJson(body, Map.class);
         dao.removeByFirstName(map.get("firstName"));
         try {

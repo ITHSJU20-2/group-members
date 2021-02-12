@@ -2,20 +2,26 @@ package se.iths.groupmembers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import se.iths.db.JPA;
 
 public class Main {
 
     // TODO: Dependency injection
-    // GSON DAO
 
     private static final int PORT = 5050;
-    private static GsonBuilder gsonBuilder;
-    private static Gson gson;
 
     public static void main(String[] args) {
-        gsonBuilder = new GsonBuilder();
+        GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.setPrettyPrinting();
-        gson = gsonBuilder.create();
-        new Server().start(PORT);
+        Gson gson = gsonBuilder.create();
+
+        JPA dao = new JPA();
+
+        Server server = new Server();
+        server.setGson(gson);
+        server.setJpa(dao);
+        server.setPort(PORT);
+
+        server.start();
     }
 }
