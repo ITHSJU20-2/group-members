@@ -26,7 +26,7 @@ public class DeleteUserById implements Page {
     public void load(Socket socket, String body, boolean head) {
         UserDAOWithJPAImpl dao = new UserDAOWithJPAImpl();
         Map<String, String> map = new Gson().fromJson(body, Map.class);
-        dao.removeById(map.get(id));
+        dao.removeById(Integer.parseInt(map.get("id")));
         try {
             String statusString = "{\n\"success\":\"ok\"\n}";
             PrintStream printStream = new PrintStream(socket.getOutputStream());
