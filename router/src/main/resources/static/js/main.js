@@ -13,7 +13,7 @@ fetch('/getusers').then(response => response.json()).then(res => {
         if (userInput) {
             searchWrapper.classList.add('active');
             icon.addEventListener('click', () => {
-                link.setAttribute('href', '/person?name=' + userInput);
+                link.setAttribute('href', '/person?firstName=' + userInput.substring(0, userInput.indexOf(' ')) + '&lastName=' + userInput.substring(userInput.indexOf(' ') + 1));
                 link.click();
             });
             suggArr = suggestions.filter((data) => {
@@ -41,7 +41,7 @@ const select = (el) => {
     let selectData = el.textContent;
     input.value = selectData;
     icon.addEventListener('click', () => {
-        link.setAttribute('href', '/person?name=' + selectData);
+        link.setAttribute('href', '/person?firstName=' + selectData.substring(0, selectData.indexOf(' ')) + '&lastName=' + selectData.substring(selectData.indexOf(' ') + 1));
         link.click();
     });
     searchWrapper.classList.remove('active');

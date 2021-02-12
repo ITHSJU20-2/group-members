@@ -9,24 +9,24 @@ public class JPA implements UserDAO {
 
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("GroupMembers");
 
-@Override
-public boolean getByFirstName(String firstName) {
-    boolean success = false;
-    EntityManager em = emf.createEntityManager();
-    em.getTransaction().begin();
-    User u = em.createQuery("from User u where u.firstName = :firstName", User.class)
-            .setParameter("firstName", firstName).getSingleResult();
+    @Override
+    public boolean getByFirstName(String firstName) {
+        boolean success = false;
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        User u = em.createQuery("from User u where u.firstName = :firstName", User.class)
+                .setParameter("firstName", firstName).getSingleResult();
         if (u != null) {
             System.out.println(u);
             success = true;
         }
-    em.getTransaction().commit();
-    return success;
-}
+        em.getTransaction().commit();
+        return success;
+    }
 
 
     @Override
-    public boolean getById(int id){
+    public boolean getById(int id) {
         boolean success = false;
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
@@ -37,6 +37,20 @@ public boolean getByFirstName(String firstName) {
         }
         em.getTransaction().commit();
         return success;
+    }
+
+    @Override
+    public User getByFirstLast(String firstName, String lastName) {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        User u = em.createQuery("from User u where u.firstName = :firstName and u.lastName = :lastName", User.class)
+                .setParameter("firstName", firstName)
+                .setParameter("lastName", lastName).getSingleResult();
+        em.getTransaction().commit();
+        if (u != null) {
+            return u;
+        }
+        return null;
     }
 
     @Override
@@ -94,13 +108,13 @@ public boolean getByFirstName(String firstName) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         User u = em.find(User.class, id);
-            if (u != null) {
-                em.remove(u);
-                success = true;
-                System.out.println("Record with ID " + u.getId() + " has been deleted from table");
-            }
-            em.getTransaction().commit();
-            return success;
+        if (u != null) {
+            em.remove(u);
+            success = true;
+            System.out.println("Record with ID " + u.getId() + " has been deleted from table");
+        }
+        em.getTransaction().commit();
+        return success;
     }
 
     @Override

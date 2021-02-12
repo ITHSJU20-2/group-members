@@ -15,5 +15,6 @@ module router {
     requires dao;
     requires com.google.gson;
     provides Page with Index, Error, Person, MainCSS, CatIMG, Laboration1PDF, PersonJS, GetUsers,
-            AddUser, DeleteUserByFirstName, DeleteUserByLastName, DeleteUserById, MainJS, GetUserByFirstName, GetUserById, UpdateUser;
+            AddUser, DeleteUserByFirstName, DeleteUserByLastName, DeleteUserById, MainJS, GetUserByFirstName,
+            GetUserById, UpdateUser, GetByFirstLast;
 }

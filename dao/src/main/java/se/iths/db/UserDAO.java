@@ -5,11 +5,13 @@ import java.util.List;
 public interface UserDAO {
 
 
-    public boolean getByFirstName (String firstName);
+    boolean getByFirstName(String firstName);
 
     List<User> getAll();
 
     boolean getById(int id);
+
+    User getByFirstLast(String firstName, String lastName);
 
     boolean add(String firstName, String lastName);
 

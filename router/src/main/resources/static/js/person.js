@@ -1,16 +1,20 @@
 let urlParams = new URLSearchParams(window.location.search);
-let name = urlParams.get('name')
-let app = document.getElementById("app");
+let firstName = urlParams.get('firstName');
+let lastName = urlParams.get('lastName');
 let nameEl = document.querySelector(".name");
+let idEl = document.querySelector(".id");
 
-if (name) {
-    document.title = name;
+let userObj = {
+    firstName,
+    lastName
+};
+
+$.post('/getbyfirstlast', userObj).done(data => {
+    document.title = data.firstName + ' ' + data.lastName;
     nameEl.classList.remove('loading')
-    nameEl.innerText = name;
-}
-
-app.appendChild(nameEl);
-
+    nameEl.innerText = data.firstName + ' ' + data.lastName;
+    idEl.innerText = data.id;
+});
 
 
 

@@ -63,6 +63,7 @@ public class Server {
             }
 
             String[] header = headerLine.split(" ");
+            System.out.println(headerLine);
 
             /*
              * With the request method run the correct code
@@ -167,6 +168,9 @@ public class Server {
      * Method for handling all incoming POST requests
      */
     public void post(Socket socket, String fullPath, String body, PrintStream printStream) {
+        if (!body.startsWith("{") && !body.endsWith("}")) {
+            body = queryStringToJson(body);
+        }
         String[] path = fullPath.split("\\?", 2);
         String page = path[0].substring(1);
         if (pageList.contains(page)) {
@@ -178,5 +182,10 @@ public class Server {
         // so it will fallback to the error page.
         // Until we figure out how to properly setup a fallback error page this will have to do.
         pages.stream().filter(reqPage -> reqPage.get().getClass().getAnnotation(Path.class).path().equals("error")).collect(Collectors.toList()).get(0).get().doGet(socket, false, printStream, gson, jpa);
+    }
+
+    private String queryStringToJson(String query) {
+        query = query.replaceAll("=", "\":\"").replaceAll("&", "\",\"");
+        return "{\"" + query + "\"}";
     }
 }
