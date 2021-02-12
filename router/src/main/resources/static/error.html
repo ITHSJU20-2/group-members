@@ -35,6 +35,7 @@
             margin-top: 50px;
             height: 75vh;
             width: 75vh;
+            cursor: pointer;
         }
 
         .wrapper {
@@ -59,9 +60,13 @@
     <canvas id="canvas"></canvas>
 </div>
 <script>
+    // C/O https://github.com/marcuslark/Snake-Game
     const canvas = document.getElementById('canvas');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.addEventListener('click', () => {
+        window.location = 'https://github.com/marcuslark/Snake-Game';
+    });
+    canvas.width = 1000;
+    canvas.height = 1000;
     const context = canvas.getContext('2d');
     const size = Math.round(canvas.width / 50);
     const xEnd = Math.round(canvas.width / size) * size;
@@ -69,7 +74,7 @@
     let directionLock = false;
 
     // States
-    const snake = [{x: 0, y: 0}];
+    const snake = [{x: 500, y: 500}];
     const apple = {};
     let direction = 'right';
     let speed = 200;
