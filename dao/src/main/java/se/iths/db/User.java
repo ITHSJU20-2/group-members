@@ -9,7 +9,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private int id;
 
     private String firstName;
 
@@ -24,11 +24,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public void setId() {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
@@ -48,11 +48,6 @@ public class User {
         this.lastName = lastName;
     }
 
-    public User(String id, String firstName, String lastName) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
 
     @Override
     public String toString() {
