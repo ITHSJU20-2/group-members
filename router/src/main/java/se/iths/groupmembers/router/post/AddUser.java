@@ -5,18 +5,14 @@ import se.iths.db.JPA;
 import se.iths.groupmembers.router.LoadHandler;
 import se.iths.groupmembers.router.Status;
 import se.iths.groupmembers.spi.Page;
+import se.iths.groupmembers.spi.Path;
 
 import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Map;
 
+@Path(path = "adduser")
 public class AddUser implements Page {
-
-    private final String path;
-
-    public AddUser() {
-        path = "adduser";
-    }
 
     @Override
     public void doGet(Socket socket, boolean head, PrintStream printStream, Gson gson, JPA dao) {
@@ -31,10 +27,5 @@ public class AddUser implements Page {
 
         LoadHandler.print(printStream, output, Status.OK, "application/json", head);
 
-    }
-
-    @Override
-    public String getPath() {
-        return path;
     }
 }
