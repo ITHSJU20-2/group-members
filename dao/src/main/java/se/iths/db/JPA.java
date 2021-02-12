@@ -5,7 +5,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.util.List;
 
-public class UserDAOWithJPAImpl implements UserDAO {
+public class JPA implements UserDAO {
 
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("GroupMembers");
 
@@ -70,18 +70,18 @@ public class UserDAOWithJPAImpl implements UserDAO {
     }
 
     @Override
-    public boolean updateByFirstLast(String firstName, String lastName, String newFirstName, String newLastName) {
+    public boolean removeById(int id) {
         boolean success = false;
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        User u = em.find(User.class, firstName);
-        if (u != null ) {
-            u.setFirstName(newFirstName);
-            u.setLastName(newLastName);
-            success = true;
-        }
-        em.getTransaction().commit();
-        return success;
+        User u = em.find(User.class, id);
+            if (u != null) {
+                em.remove(u);
+                success = true;
+                System.out.println("Record with ID " + u.getId() + " has been deleted from table");
+            }
+            em.getTransaction().commit();
+            return success;
     }
 }
 
