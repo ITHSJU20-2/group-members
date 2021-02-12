@@ -11,6 +11,7 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.util.List;
 
+// TODO: Custom path annotation
 public class GetUsers implements Page {
 
     private final String path;
@@ -20,9 +21,10 @@ public class GetUsers implements Page {
     }
 
     @Override
-    public void load(Socket socket, boolean head) {
+    public void doGet(Socket socket, boolean head) {
         try {
 
+            // TODO: Refactor json to bytearray
             GsonBuilder builder = new GsonBuilder();
             builder.setPrettyPrinting();
 
@@ -59,8 +61,8 @@ public class GetUsers implements Page {
     }
 
     @Override
-    public void load(Socket socket, String body, boolean head) {
-        load(socket, head);
+    public void doPost(Socket socket, String body, boolean head) {
+        doGet(socket, head);
     }
 
     @Override

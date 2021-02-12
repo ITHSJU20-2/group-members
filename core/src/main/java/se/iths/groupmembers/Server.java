@@ -15,6 +15,7 @@ public class Server {
             System.out.println("Listening on http://localhost:" + port);
             while (true) {
                 Socket socket = serverSocket.accept();
+                // TODO: Use thread pool instead
                 new ServerThread(socket).start();
             }
         } catch (IOException e) {

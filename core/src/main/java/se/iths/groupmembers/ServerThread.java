@@ -102,7 +102,7 @@ public class ServerThread extends Thread {
         String[] path = fullPath.split("\\?", 2);
         String page = path[0].substring(1);
         if (pageList.contains(page)) {
-            pages.stream().filter(reqPage -> reqPage.get().getPath().equals(page)).collect(Collectors.toList()).get(0).get().load(socket, head);
+            pages.stream().filter(reqPage -> reqPage.get().getPath().equals(page)).collect(Collectors.toList()).get(0).get().doGet(socket, head);
             return;
         }
 
@@ -118,7 +118,7 @@ public class ServerThread extends Thread {
         // This is supposed to stay at the very bottom as a way to catch anything slipping through when nothing matches
         // so it will fallback to the error page.
         // Until we figure out how to properly setup a fallback error page this will have to do.
-        pages.stream().filter(reqPage -> reqPage.get().getPath().equals("error")).collect(Collectors.toList()).get(0).get().load(socket, head);
+        pages.stream().filter(reqPage -> reqPage.get().getPath().equals("error")).collect(Collectors.toList()).get(0).get().doGet(socket, head);
     }
 
     /*
@@ -128,14 +128,14 @@ public class ServerThread extends Thread {
         String[] path = fullPath.split("\\?", 2);
         String page = path[0].substring(1);
         if (pageList.contains(page)) {
-            pages.stream().filter(reqPage -> reqPage.get().getPath().equals(page)).collect(Collectors.toList()).get(0).get().load(socket, body, false);
+            pages.stream().filter(reqPage -> reqPage.get().getPath().equals(page)).collect(Collectors.toList()).get(0).get().doPost(socket, body, false);
             return;
         }
 
         // This is supposed to stay at the very bottom as a way to catch anything slipping through when nothing matches
         // so it will fallback to the error page.
         // Until we figure out how to properly setup a fallback error page this will have to do.
-        pages.stream().filter(reqPage -> reqPage.get().getPath().equals("error")).collect(Collectors.toList()).get(0).get().load(socket, false);
+        pages.stream().filter(reqPage -> reqPage.get().getPath().equals("error")).collect(Collectors.toList()).get(0).get().doGet(socket, false);
     }
 
 }

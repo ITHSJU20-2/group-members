@@ -18,12 +18,12 @@ public class AddUser implements Page {
     }
 
     @Override
-    public void load(Socket socket, boolean head) {
-        load(socket, "", head);
+    public void doGet(Socket socket, boolean head) {
+        doPost(socket, "", head);
     }
 
     @Override
-    public void load(Socket socket, String body, boolean head) {
+    public void doPost(Socket socket, String body, boolean head) {
         UserDAOWithJPAImpl dao = new UserDAOWithJPAImpl();
         Map<String, String> map = new Gson().fromJson(body, Map.class);
         dao.add(map.get("firstName"), map.get("lastName"));
