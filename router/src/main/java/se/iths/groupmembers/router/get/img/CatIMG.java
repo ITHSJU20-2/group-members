@@ -15,13 +15,13 @@ public class CatIMG implements Page {
     }
 
     @Override
-    public void load(Socket socket, boolean head) {
+    public void doGet(Socket socket, boolean head) {
         LoadHandler.load(socket, path, Status.OK, head);
     }
 
     @Override
-    public void load(Socket socket, String body, boolean head) {
-        load(socket, head);
+    public void doPost(Socket socket, String body, boolean head) {
+        doGet(socket, head);
     }
 
     @Override
