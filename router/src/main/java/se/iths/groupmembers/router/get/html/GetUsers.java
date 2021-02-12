@@ -11,6 +11,7 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.util.List;
 
+// TODO: Custom path annotation
 public class GetUsers implements Page {
 
     private final String path;
@@ -20,9 +21,10 @@ public class GetUsers implements Page {
     }
 
     @Override
-    public void load(Socket socket, boolean head) {
+    public void doGet(Socket socket, boolean head) {
         try {
 
+            // TODO: Refactor json to bytearray
             GsonBuilder builder = new GsonBuilder();
             builder.setPrettyPrinting();
 
@@ -37,11 +39,18 @@ public class GetUsers implements Page {
             }
             json.deleteCharAt(json.lastIndexOf(",")).append("]");
 
+            int contentLength = json.toString().length();
+
+            /*
+             * You might need to uncomment the line below for this route to work properly (dunno why) ¯\_(ツ)_/¯
+             */
+//             contentLength += 3;
+
             PrintStream printStream = new PrintStream(socket.getOutputStream());
 
             printStream.println("HTTP/1.1 200 OK");
             printStream.println("Content-Type: application/json");
-            printStream.println("Content-Length: " + (json.toString().length() + 3));
+            printStream.println("Content-Length: " + contentLength);
             if (!head) {
                 printStream.println();
                 printStream.println(json);
@@ -52,8 +61,8 @@ public class GetUsers implements Page {
     }
 
     @Override
-    public void load(Socket socket, String body, boolean head) {
-        load(socket, head);
+    public void doPost(Socket socket, String body, boolean head) {
+        doGet(socket, head);
     }
 
     @Override

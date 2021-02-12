@@ -2,7 +2,8 @@ package se.iths.groupmembers;
 
 public class Main {
 
-
+    // TODO: Dependency injection
+    // GSON DAO
 
     private static final int PORT = 5050;
 
