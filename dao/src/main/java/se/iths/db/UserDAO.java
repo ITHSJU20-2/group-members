@@ -5,21 +5,19 @@ import java.util.List;
 public interface UserDAO {
 
 
-    boolean getByFirstName(String firstName);
+    User getByFirstName (String firstName);
 
     List<User> getAll();
 
-    boolean getById(int id);
+    User getById(int id);
 
-    User getByFirstLast(String firstName, String lastName);
+    User add(String firstName, String lastName);
 
-    boolean add(String firstName, String lastName);
+    User removeByFirstName(String firstName);
 
-    boolean removeByFirstName(String firstName);
+    User removeByLastName(String lastName);
 
-    boolean removeByLastName(String lastName);
+    User removeById(int id);
 
-    boolean removeById(int id);
-
-    boolean updateByFirstLast(String firstName, String lastName, String newFirstName, String newLastName);
+    User updateByFirstLast(String firstName, String lastName, String newFirstName, String newLastName);
 }

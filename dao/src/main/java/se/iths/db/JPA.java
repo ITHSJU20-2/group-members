@@ -9,48 +9,32 @@ public class JPA implements UserDAO {
 
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("GroupMembers");
 
-    @Override
-    public boolean getByFirstName(String firstName) {
-        boolean success = false;
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        User u = em.createQuery("from User u where u.firstName = :firstName", User.class)
-                .setParameter("firstName", firstName).getSingleResult();
+@Override
+public User getByFirstName(String firstName) {
+    EntityManager em = emf.createEntityManager();
+    em.getTransaction().begin();
+    User u = em.createQuery("from User u where u.firstName = :firstName", User.class)
+            .setParameter("firstName", firstName).getSingleResult();
         if (u != null) {
             System.out.println(u);
-            success = true;
         }
-        em.getTransaction().commit();
-        return success;
-    }
+    em.getTransaction().commit();
+        em.close();
+        return u;
+}
 
 
     @Override
-    public boolean getById(int id) {
-        boolean success = false;
+    public User getById(int id){
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         User u = em.find(User.class, id);
         if (u != null) {
             System.out.println(u);
-            success = true;
         }
         em.getTransaction().commit();
-        return success;
-    }
-
-    @Override
-    public User getByFirstLast(String firstName, String lastName) {
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        User u = em.createQuery("from User u where u.firstName = :firstName and u.lastName = :lastName", User.class)
-                .setParameter("firstName", firstName)
-                .setParameter("lastName", lastName).getSingleResult();
-        em.getTransaction().commit();
-        if (u != null) {
-            return u;
-        }
-        return null;
+        em.close();
+        return u;
     }
 
     @Override
@@ -60,21 +44,23 @@ public class JPA implements UserDAO {
         em.getTransaction().begin();
         list = em.createQuery("from User u", User.class).getResultList();
         em.getTransaction().commit();
+        em.close();
         return list;
     }
 
     @Override
-    public boolean add(String firstName, String lastName) {
+    public User add(String firstName, String lastName) {
         EntityManager em = emf.createEntityManager();
+        User u = new User(firstName, lastName);
         em.getTransaction().begin();
-        em.persist(new User(firstName, lastName));
+        em.persist(u);
         em.getTransaction().commit();
-        return true;
+        em.close();
+        return u;
     }
 
     @Override
-    public boolean removeByFirstName(String firstName) {
-        boolean success = false;
+    public User removeByFirstName(String firstName) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         User u = em.createQuery("from User u where u.firstName = :firstName", User.class)
@@ -82,14 +68,13 @@ public class JPA implements UserDAO {
         System.out.println(u);
         if (u != null)
             em.remove(u);
-        success = true;
         em.getTransaction().commit();
-        return success;
+        em.close();
+        return u;
     }
 
     @Override
-    public boolean removeByLastName(String lastName) {
-        boolean success = false;
+    public User removeByLastName(String lastName) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         User u = em.createQuery("from User u where u.lastName = :lastName", User.class)
@@ -97,29 +82,27 @@ public class JPA implements UserDAO {
         System.out.println(u);
         if (u != null)
             em.remove(u);
-        success = true;
         em.getTransaction().commit();
-        return success;
+        em.close();
+        return u;
     }
 
     @Override
-    public boolean removeById(int id) {
-        boolean success = false;
+    public User removeById(int id) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         User u = em.find(User.class, id);
-        if (u != null) {
-            em.remove(u);
-            success = true;
-            System.out.println("Record with ID " + u.getId() + " has been deleted from table");
-        }
-        em.getTransaction().commit();
-        return success;
+            if (u != null) {
+                em.remove(u);
+                System.out.println("Record with ID " + u.getId() + " has been deleted from table");
+            }
+            em.getTransaction().commit();
+            em.close();
+            return u;
     }
 
     @Override
-    public boolean updateByFirstLast(String firstName, String lastName, String newFirstName, String newLastName) {
-        boolean success = false;
+    public User updateByFirstLast(String firstName, String lastName, String newFirstName, String newLastName) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         User u = em.createQuery("from User u where u.firstName = :firstName and u.lastName = :lastName", User.class)
@@ -128,10 +111,10 @@ public class JPA implements UserDAO {
         if (u != null) {
             u.setFirstName(newFirstName);
             u.setLastName(newLastName);
-            success = true;
         }
         em.getTransaction().commit();
-        return success;
+        em.close();
+        return u;
     }
 
 }
