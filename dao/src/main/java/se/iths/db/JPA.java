@@ -89,18 +89,16 @@ public boolean getByFirstName(String firstName) {
     }
 
     @Override
-    public boolean removeById(int id) {
-        boolean success = false;
+    public User removeById(int id) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         User u = em.find(User.class, id);
             if (u != null) {
                 em.remove(u);
-                success = true;
                 System.out.println("Record with ID " + u.getId() + " has been deleted from table");
             }
             em.getTransaction().commit();
-            return success;
+            return u;
     }
 
     @Override

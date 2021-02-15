@@ -17,7 +17,7 @@ public interface UserDAO {
 
     boolean removeByLastName(String lastName);
 
-    boolean removeById(int id);
+    User removeById(int id);
 
     boolean updateByFirstLast(String firstName, String lastName, String newFirstName, String newLastName);
 }
