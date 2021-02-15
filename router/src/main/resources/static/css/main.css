@@ -29,14 +29,8 @@ body {
 }
 
 .search-wrapper .autocomplete {
-    padding: 0;
-    opacity: 0;
-    pointer-events: none;
     max-height: 280px;
     overflow-y: auto;
-}
-
-.search-wrapper.active .autocomplete {
     padding: 10px 8px;
     opacity: 1;
     pointer-events: auto;
@@ -45,18 +39,10 @@ body {
 .autocomplete .autocomplete-item {
     list-style: none;
     padding: 8px 12px;
-    display: none;
+    display: block;
     width: 100%;
     cursor: default;
 }
-
-.search-wrapper.active .autocomplete .autocomplete-item {
-    display: block;
-}
-
-/*.search-wrapper:not(:has(.active)) .autocomplete .autocomplete-item {*/
-/*    display: none;*/
-/*}*/
 
 .autocomplete .autocomplete-item:hover {
     background: #333;
@@ -74,20 +60,4 @@ body {
     font-size: 20px;
     color: #333;
     cursor: pointer;
-}
-
-.topnav {
-    display: flex;
-    flex-direction: row;
-}
-
-.topnav a {
-    text-decoration: none;
-    color: black;
-    padding: 0 10px;
-}
-
-.topnav a:hover {
-    text-decoration: underline;
-    color: darkgray;
 }

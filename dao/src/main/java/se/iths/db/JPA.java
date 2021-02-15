@@ -9,23 +9,23 @@ public class JPA implements UserDAO {
 
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("GroupMembers");
 
-@Override
-public User getByFirstName(String firstName) {
-    EntityManager em = emf.createEntityManager();
-    em.getTransaction().begin();
-    User u = em.createQuery("from User u where u.firstName = :firstName", User.class)
-            .setParameter("firstName", firstName).getSingleResult();
+    @Override
+    public User getByFirstName(String firstName) {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        User u = em.createQuery("from User u where u.firstName = :firstName", User.class)
+                .setParameter("firstName", firstName).getSingleResult();
         if (u != null) {
             System.out.println(u);
         }
-    em.getTransaction().commit();
+        em.getTransaction().commit();
         em.close();
         return u;
-}
+    }
 
 
     @Override
-    public User getById(int id){
+    public User getById(int id) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         User u = em.find(User.class, id);
@@ -46,6 +46,18 @@ public User getByFirstName(String firstName) {
         em.getTransaction().commit();
         em.close();
         return list;
+    }
+
+    @Override
+    public User getByFirstLast(String firstName, String lastName) {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        User u = em.createQuery("from User u where u.firstName = :firstName and u.lastName = :lastName", User.class)
+                .setParameter("firstName", firstName)
+                .setParameter("lastName", lastName).getSingleResult();
+        em.getTransaction().commit();
+        em.close();
+        return u;
     }
 
     @Override
@@ -92,13 +104,13 @@ public User getByFirstName(String firstName) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         User u = em.find(User.class, id);
-            if (u != null) {
-                em.remove(u);
-                System.out.println("Record with ID " + u.getId() + " has been deleted from table");
-            }
-            em.getTransaction().commit();
-            em.close();
-            return u;
+        if (u != null) {
+            em.remove(u);
+            System.out.println("Record with ID " + u.getId() + " has been deleted from table");
+        }
+        em.getTransaction().commit();
+        em.close();
+        return u;
     }
 
     @Override

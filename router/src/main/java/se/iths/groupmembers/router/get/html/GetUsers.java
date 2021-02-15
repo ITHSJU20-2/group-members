@@ -17,7 +17,6 @@ import java.util.List;
 @Path(path = "getusers")
 public class GetUsers implements Page {
 
-
     @Override
     public void doGet(Socket socket, boolean head, PrintStream printStream, Gson gson, JPA dao) {
         StringBuilder json = new StringBuilder("[");

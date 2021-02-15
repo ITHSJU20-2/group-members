@@ -13,7 +13,6 @@ import java.net.Socket;
 @Path(path = "css/main.css")
 public class MainCSS implements Page {
 
-
     @Override
     public void doGet(Socket socket, boolean head, PrintStream printStream, Gson gson, JPA dao) {
         LoadHandler.load(this.getClass().getAnnotation(Path.class).path(), Status.OK, head, printStream);

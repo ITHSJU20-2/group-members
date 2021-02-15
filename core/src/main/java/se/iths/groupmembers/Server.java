@@ -63,7 +63,6 @@ public class Server {
             }
 
             String[] header = headerLine.split(" ");
-            System.out.println(headerLine);
 
             /*
              * With the request method run the correct code

@@ -13,7 +13,6 @@ import java.net.Socket;
 @Path(path = "person")
 public class Person implements Page {
 
-
     @Override
     public void doGet(Socket socket, boolean head, PrintStream printStream, Gson gson, JPA dao) {
         LoadHandler.load(this.getClass().getAnnotation(Path.class).path(), Status.OK, head, printStream);

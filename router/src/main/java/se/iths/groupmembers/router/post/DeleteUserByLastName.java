@@ -23,6 +23,6 @@ public class DeleteUserByLastName implements Page {
     public void doPost(Socket socket, String body, boolean head, PrintStream printStream, Gson gson, JPA dao) {
         Map<String, String> map = gson.fromJson(body, Map.class);
         User u = dao.removeByLastName((map.get("lastName")));
-        LoadHandler.printJson(u,gson,printStream,head);
+        LoadHandler.printJson(u, gson, printStream, head);
     }
 }

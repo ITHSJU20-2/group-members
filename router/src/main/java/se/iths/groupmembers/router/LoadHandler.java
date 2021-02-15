@@ -32,8 +32,6 @@ public class LoadHandler {
             bos.close();
             byte[] output = bos.toByteArray();
 
-
-            //38-42 as another method?
             String contentType = Files.probeContentType(file.toPath());
 
             if (fileName.endsWith(".js")) {
@@ -70,7 +68,7 @@ public class LoadHandler {
 
         if (u == null) {
             status = Status.NOT_FOUND;
-            output = "{\n\"MassiveFail\":\"nope\"\n}".getBytes();
+            output = "{\n\"ok\":false\n}".getBytes();
         } else {
             status = Status.OK;
             output = gson.toJson(u, User.class).getBytes();

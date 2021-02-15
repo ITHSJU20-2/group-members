@@ -13,6 +13,7 @@ import java.util.Map;
 
 @Path(path = "getuserbyid")
 public class GetUserById implements Page {
+
     @Override
     public void doGet(Socket socket, boolean head, PrintStream printStream, Gson gson, JPA dao) {
         doPost(socket, "", head, printStream, gson, dao);
@@ -22,7 +23,7 @@ public class GetUserById implements Page {
     public void doPost(Socket socket, String body, boolean head, PrintStream printStream, Gson gson, JPA dao) {
         Map<String, String> map = gson.fromJson(body, Map.class);
         User u = dao.getById(Integer.parseInt(map.get("id")));
-        LoadHandler.printJson(u,gson,printStream,head);
+        LoadHandler.printJson(u, gson, printStream, head);
     }
 }
 

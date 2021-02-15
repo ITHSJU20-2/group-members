@@ -11,9 +11,8 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Map;
 
-@Path(path="updateuser")
+@Path(path = "updateuser")
 public class UpdateUser implements Page {
-
 
     @Override
     public void doGet(Socket socket, boolean head, PrintStream printStream, Gson gson, JPA dao) {
@@ -23,13 +22,12 @@ public class UpdateUser implements Page {
     @Override
     public void doPost(Socket socket, String body, boolean head, PrintStream printStream, Gson gson, JPA dao) {
         Map<String, String> map = gson.fromJson(body, Map.class);
-
         User u = dao.updateByFirstLast(
                 map.get("firstName"),
                 map.get("lastName"),
                 map.get("newFirstName"),
                 map.get("newLastName")
         );
-        LoadHandler.printJson(u,gson,printStream,head);
+        LoadHandler.printJson(u, gson, printStream, head);
     }
 }
