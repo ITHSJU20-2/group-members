@@ -17,7 +17,6 @@ public class LoadHandler {
                 fileName += ".html";
             }
 
-            //21-34? separate method?
             int length;
             File file = new File(new File("router/src/main/resources/static/" + fileName).getAbsoluteFile().toString());
             FileInputStream fileInputStream = new FileInputStream(file);
@@ -65,14 +64,14 @@ public class LoadHandler {
         }
     }
 
-    public static void printJson(User u, Gson gson, PrintStream printStream, Boolean head){
+    public static void printJson(User u, Gson gson, PrintStream printStream, Boolean head) {
         byte[] output;
         Status status;
 
-        if(u == null) {
+        if (u == null) {
             status = Status.NOT_FOUND;
             output = "{\n\"MassiveFail\":\"nope\"\n}".getBytes();
-        }else {
+        } else {
             status = Status.OK;
             output = gson.toJson(u, User.class).getBytes();
         }
