@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import se.iths.db.JPA;
 import se.iths.db.User;
 import se.iths.groupmembers.router.LoadHandler;
-import se.iths.groupmembers.router.Status;
 import se.iths.groupmembers.spi.Page;
 import se.iths.groupmembers.spi.Path;
 
@@ -24,14 +23,6 @@ public class DeleteUserById implements Page {
     public void doPost(Socket socket, String body, boolean head, PrintStream printStream, Gson gson, JPA dao) {
         Map<String, String> map = gson.fromJson(body, Map.class);
         User u = dao.removeById(Integer.parseInt(map.get("id")));
-        byte[] output;
-        if(u == null) {
-            output = "{\n\"MassiveFail\":\"nope\"\n}".getBytes();
-        }else {
-            output = gson.toJson(u, User.class).getBytes();
-        }
-
-
-        LoadHandler.print(printStream, output, Status.OK, "application/json", head);
+        LoadHandler.printJson(u,gson,printStream,head);
     }
 }

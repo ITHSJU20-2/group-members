@@ -1,5 +1,8 @@
 package se.iths.groupmembers.router;
 
+import com.google.gson.Gson;
+import se.iths.db.User;
+
 import java.io.*;
 import java.nio.file.Files;
 
@@ -13,6 +16,8 @@ public class LoadHandler {
             if (!fileName.contains(".")) {
                 fileName += ".html";
             }
+
+            //21-34? separate method?
             int length;
             File file = new File(new File("router/src/main/resources/static/" + fileName).getAbsoluteFile().toString());
             FileInputStream fileInputStream = new FileInputStream(file);
@@ -28,6 +33,8 @@ public class LoadHandler {
             bos.close();
             byte[] output = bos.toByteArray();
 
+
+            //38-42 as another method?
             String contentType = Files.probeContentType(file.toPath());
 
             if (fileName.endsWith(".js")) {
@@ -57,4 +64,20 @@ public class LoadHandler {
             e.printStackTrace();
         }
     }
+
+    public static void printJson(User u, Gson gson, PrintStream printStream, Boolean head){
+        byte[] output;
+        Status status;
+
+        if(u == null) {
+            status = Status.NOT_FOUND;
+            output = "{\n\"MassiveFail\":\"nope\"\n}".getBytes();
+        }else {
+            status = Status.OK;
+            output = gson.toJson(u, User.class).getBytes();
+        }
+
+        LoadHandler.print(printStream, output, status, "application/json", head);
+    }
+
 }

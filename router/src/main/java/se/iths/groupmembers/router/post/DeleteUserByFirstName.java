@@ -2,8 +2,8 @@ package se.iths.groupmembers.router.post;
 
 import com.google.gson.Gson;
 import se.iths.db.JPA;
+import se.iths.db.User;
 import se.iths.groupmembers.router.LoadHandler;
-import se.iths.groupmembers.router.Status;
 import se.iths.groupmembers.spi.Page;
 import se.iths.groupmembers.spi.Path;
 
@@ -22,9 +22,7 @@ public class DeleteUserByFirstName implements Page {
     @Override
     public void doPost(Socket socket, String body, boolean head, PrintStream printStream, Gson gson, JPA dao) {
         Map<String, String> map = gson.fromJson(body, Map.class);
-        dao.removeByFirstName(map.get("firstName"));
-        byte[] output = "{\n\"success\":\"ok\"\n}".getBytes();
-
-        LoadHandler.print(printStream, output, Status.OK, "application/json", head);
+        User u = dao.removeByFirstName(map.get("firstName"));
+        LoadHandler.printJson(u,gson,printStream,head);
     }
 }
